@@ -58,11 +58,8 @@ function insertItem($dbh, $name, $file)
 // функция обновления предмета в бд
 function updateItem($dbh, $id, $name, $file)
 {
-
     // проверка на наличие $file
-    // как выяснила гптшка, если ничего не загрузить инпут файла, то $_FILES все равно не пустое
-    // а возвращает ошибку какую-то, так что вот такая проверка
-    if(isset($file) && $file['error'] === UPLOAD_ERR_OK){
+    if(isset($file)){
         // проверка разрешения картинки
         $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!in_array($file['type'], $allowedTypes)) {
@@ -96,11 +93,33 @@ function updateItem($dbh, $id, $name, $file)
 function deleteItem($dbh, $id)
 {
     $sth = $dbh->prepare('
-    DELETE FROM `items`
-    WHERE `items`.`id` = ?');
-    $sth->execute([$id]);
+        SELECT * FROM crafts
+        WHERE crafting_item = ?
+        OR pos_1 = ?
+        OR pos_2 = ?
+        OR pos_3 = ?
+        OR pos_4 = ?
+        OR pos_5 = ?
+        OR pos_6 = ?
+        OR pos_7 = ?
+        OR pos_8 = ?
+        OR pos_9 = ?;');
+    $sth->execute([$id, $id, $id, $id, $id, $id, $id, $id, $id, $id]);
+    $craft = $sth->fetch(PDO::FETCH_ASSOC);
 
-    echo json_encode('yay!');
+
+    if($craft){
+        echo json_encode([
+            'error'=>'Этот предмет задействован в рецепте крафта! Удалите/измените рецепты связанных крафтов'
+        ]);
+    }
+    else{
+        $sth = $dbh->prepare('
+        DELETE FROM `items`
+        WHERE `items`.`id` = ?');
+        $sth->execute([$id]);
+        echo json_encode('yay!');
+    }
 }
 
 switch ($function) {

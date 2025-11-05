@@ -12,15 +12,23 @@
 <body>
     <?php include('assets/includes/header.php') ?>
     <main id="adminMain">
-        <h1>Админ панель</h1>
+        <div class="adminButtons">
+            <button id="itemsSection"
+                onclick="itemForm.style.display = 'flex'; craftForm.style.display = 'none'">
+                ПРЕДМЕТЫ
+            </button>
+            <button id="craftsSection" onclick="craftForm.style.display = 'flex'; itemForm.style.display = 'none'">
+                КРАФТЫ
+            </button>
+        </div>
         <div id="adminContainer">
             <div class="list">
                 <div class="listhead">
                     <div class="search">
                         <img src="assets/img/search.webp" alt="search">
-                        <input type="search">
+                        <input type="search" placeholder="Поиск...">
                     </div>
-                    <img src="assets/img/Recipe Button.png" alt="filter">
+                    <img src="assets/img/Recipe Button.png" alt="filter" id="filter">
                 </div>
 
                 <div class="listCells">
@@ -46,8 +54,81 @@
                     </span>
                     <p class="error"></p>
                 </div>
-                <div class="crafts">
+                <div id="craftForm">
+                    <span id="craftDisplay">
+                        <table class="craftingTable">
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        </table>
 
+                        <img src="assets/img/arrow.png" id="arrow">
+
+                        <div class="result">
+                        </div>
+                        <input type="number" id="quantity">
+                    </span>
+
+                    <span class="buttons">
+                        <button id="apply">Подтвердить</button>
+                        <button id="delete">Удалить</button>
+                        <button id="add">Создать</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="craftsList">
+            <div class="craft">
+                <table class="craftingTable">
+                    <tr>
+                        <td>
+                            <img src="assets/img/${element.image_1}" alt="${element.pos_1}">
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+                <div class="result">
+                    <img src="assets/img/cart.webp" alt="">
                 </div>
             </div>
         </div>
@@ -56,8 +137,11 @@
 </body>
 <script src='assets/js/main.js'></script>
 <script>
-    const items = document.querySelector('.listCells');
+    // блоки управления
+    let itemForm = document.querySelector('#itemForm');
+    let craftForm = document.querySelector('#craftForm');
 
+    const items = document.querySelector('.listCells');
     let error_p = document.querySelector(".error")
 
     // кнопки справа
@@ -65,11 +149,27 @@
     let deleteButton = document.querySelector('#delete');
     let addButton = document.querySelector('#add');
 
-    async function postItems(request) {
+    let filterButton = document.querySelector('#filter');
+
+    async function postItems(request, sort = 'a-z') {
         try {
             const response = await fetch(request);
             const result = await response.json();
             console.log(result);
+
+            // сортировка
+            // switch (sort) {
+            //     case "a-z":
+            //         result.sort((a, b) => a.name.localeCompare(b.name));
+            //         break;
+
+            //     case "z-a":
+            //         result.sort((a, b) => a.name.localeCompare(b.name));
+            //         break;
+
+            //     default:
+            //         break;
+            // }
 
             items.innerHTML = '';
 
@@ -273,6 +373,143 @@
         }
     }
 
+    // КРАФТЫ
+    let crafts = document.querySelector('.craftsList');
+    async function postCrafts(request, sort = 'a-z') {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
+            console.log(result);
+
+            crafts.innerHTML = '';
+
+            result.forEach(element => {
+                let cell = document.createElement('div');
+                cell.className = "craft";
+                cell.setAttribute('itemCraftId', element.result_id);
+
+                cell.innerHTML = `
+                        <table class="craftingTable" itemCraftId="${element.result_id}">
+                            <tr>
+                                <td>
+                                    <img src="assets/img/${element.slot1}" alt="">
+                                </td>
+                                <td>
+                                    <img src="assets/img/${element.slot2}" alt="">
+                                </td>
+                                <td>
+                                    <img src="assets/img/${element.slot3}" alt="">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <img src="assets/img/${element.slot4}" alt="">
+                                </td>
+                                <td>
+                                    <img src="assets/img/${element.slot5}" alt="">
+                                </td>
+                                <td>
+                                    <img src="assets/img/${element.slot6}" alt="">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <img src="assets/img/${element.slot7}" alt="">
+                                </td>
+                                <td>
+                                    <img src="assets/img/${element.slot8}" alt="">
+                                </td>
+                                <td>
+                                    <img src="assets/img/${element.slot9}" alt="">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="result">
+                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" itemCraftId="${element.result_id}">
+                        </div>
+                    `;
+
+                cell.addEventListener('click', (event) => {
+                    const requestDif = new Request("assets/functions/crafts.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            id_item: event.target.getAttribute('itemCraftId'),
+                            function: 'defeniteCraft'
+                        })
+                    });
+
+                    postDif(requestDif);
+                });
+
+                crafts.appendChild(cell);
+            });
+
+            // // очистка полей
+            // nameInput.value = '';
+            // imageInput.value = '';
+            // image.src = "";
+
+            // // возврат кнопки добавления и удаление кнопок удаления и редактирования
+            // addButton.style.display = 'flex';
+            // deleteButton.style.display = 'none';
+            // applyButton.style.display = 'none';
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    function createAllCraftsRequest() {
+        return new Request("assets/functions/crafts.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                function: "allCrafts"
+            })
+        });
+    }
+    postCrafts(createAllCraftsRequest());
+
+    const craftingCells = document.querySelectorAll('#craftDisplay .craftingTable td');
+    const resultCell = document.querySelector('#craftDisplay .result');
+
+    //post для отправки selectDif и отображения крафта
+    async function postDif(request) {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
+            console.log(result);
+
+            craftingCells[0].innerHTML = `<img src = "assets/img/${result.slot1}" alt="" >`
+            craftingCells[1].innerHTML = `<img src = "assets/img/${result.slot2}" alt="" >`
+            craftingCells[2].innerHTML = `<img src = "assets/img/${result.slot3}" alt="" >`
+            craftingCells[3].innerHTML = `<img src = "assets/img/${result.slot4}" alt="" >`
+            craftingCells[4].innerHTML = `<img src = "assets/img/${result.slot5}" alt="" >`
+            craftingCells[5].innerHTML = `<img src = "assets/img/${result.slot6}" alt="" >`
+            craftingCells[6].innerHTML = `<img src = "assets/img/${result.slot7}" alt="" >`
+            craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" >`
+            craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" >`
+
+            resultCell.innerHTML = `<img src="assets/img/${result.result}" alt="">`;
+            // if (result.quantity != null) {
+            //     resultCell.innerHTML += `<p>${result.quantity}</p>`;
+            // }
+            document.querySelector('#quantity').value = result.quantity;
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // filterButton.addEventListener('click', () => {
+    //     postItems(createAllItemsRequest(), 'z-a');
+    // })
 
     // функция для изменения фона выбранного предмета
     // передается список элементов, и если айдишник элемента совпадает с ауди в куке, то

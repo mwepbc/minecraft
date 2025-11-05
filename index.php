@@ -79,10 +79,10 @@
             result.forEach(element => {
                 let cell = document.createElement('div');
                 cell.className = "cell";
-                cell.setAttribute('id_item', element.id);
+                cell.setAttribute('id_item', element.result_id);
 
                 cell.innerHTML = `
-                        <img src="assets/img/${element.image}" alt=${element.name} id_item="${element.id}">
+                        <img src="assets/img/${element.result_img}" alt=${element.result_name} id_item="${element.result_id}">
                     `;
 
                 cell.addEventListener('click', (event) => {
@@ -140,7 +140,6 @@
             craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" >`
 
             resultCell.innerHTML = `<img src="assets/img/${result.result}" alt="">`;
-
             if (result.quantity != null) {
                 resultCell.innerHTML += `<p>${result.quantity}</p>`;
             }
