@@ -225,8 +225,6 @@ function deleteCraft($dbh, $id)
         WHERE `crafts`.`id` = ?');
         $sth->execute([$id]);
         echo json_encode('yay!');
-
-        echo json_encode(['error' => 'something went wrong :(']);
 }
 
 // функция вставки юзера в бд
@@ -240,23 +238,37 @@ function insertCraft($dbh, $res, $pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $pos_6,
         echo json_encode(['error' => 'Выберите предмет для рецепта крафта']);
         exit();
     }
+
+    // проверка на пустоту сетки крафта
+    $c = 0;
+    $positions = [$pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $pos_6, $pos_7, $pos_8, $pos_9];
+    foreach ($positions as $pos) {
+        if ($pos == 'null')
+            $c++;
+
+        if ($c == 9){
+            echo json_encode(['error'=>'Сетка крафта не может быть пустой']);
+            exit;
+        }
+    }
+    // var_dump($positions);
     
-    // $sth = $dbh->prepare('INSERT INTO `crafts`
-    //         (`id`, `crafting_item`, `pos_1`, `pos_2`, `pos_3`, `pos_4`, `pos_5`, `pos_6`, `pos_7`, `pos_8`, `pos_9`, `quantity`)
-    //         VALUES (NULL, :res, :pos_1, :pos_2, :pos_3, :pos_4, :pos_5, :pos_6, :pos_7, :pos_8, :pos_9, :quantity)');
-    // $sth->execute([
-    //     'res' => $res,
-    //     'pos_1' => $pos_1,
-    //     'pos_2' => $pos_2,
-    //     'pos_3' => $pos_3,
-    //     'pos_4' => $pos_4,
-    //     'pos_5' => $pos_5,
-    //     'pos_6' => $pos_6,
-    //     'pos_7' => $pos_7,
-    //     'pos_8' => $pos_8,
-    //     'pos_9' => $pos_9,
-    //     'quantity' => $quantity
-    // ]);
+    $sth = $dbh->prepare('INSERT INTO `crafts`
+            (`id`, `crafting_item`, `pos_1`, `pos_2`, `pos_3`, `pos_4`, `pos_5`, `pos_6`, `pos_7`, `pos_8`, `pos_9`, `quantity`)
+            VALUES (NULL, :res, :pos_1, :pos_2, :pos_3, :pos_4, :pos_5, :pos_6, :pos_7, :pos_8, :pos_9, :quantity)');
+    $sth->execute([
+        'res' => $res,
+        'pos_1' => $pos_1,
+        'pos_2' => $pos_2,
+        'pos_3' => $pos_3,
+        'pos_4' => $pos_4,
+        'pos_5' => $pos_5,
+        'pos_6' => $pos_6,
+        'pos_7' => $pos_7,
+        'pos_8' => $pos_8,
+        'pos_9' => $pos_9,
+        'quantity' => $quantity
+    ]);
     echo json_encode(['yay!']);
 }
 
@@ -279,7 +291,18 @@ try {
             break;
 
         case 'insertCraft':
-            insertCraft($dbh, $data['result_id'], $data['slot0'], $data['slot1'], $data['slot2'], $data['slot3'], $data['slot4'], $data['slot5'], $data['slot6'], $data['slot7'], $data['slot8'], $data['quantity']);
+            insertCraft($dbh,
+            $data['result_id'],
+            $data['slot0'],
+            $data['slot1'],
+            $data['slot2'],
+            $data['slot3'],
+            $data['slot4'],
+            $data['slot5'],
+            $data['slot6'],
+            $data['slot7'],
+            $data['slot8'],
+            $data['quantity']);
             break;
 
         default:

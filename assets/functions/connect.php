@@ -23,6 +23,10 @@ try {
             $input = json_decode(file_get_contents('php://input'), true);
             $function = $input['function'] ?? null;
             $data = $input;
+
+            foreach ($data as $e) {
+                $e = ($e == 'null') ? NULL : $e;
+            }
         }
     }
 

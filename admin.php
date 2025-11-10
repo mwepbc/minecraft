@@ -213,6 +213,7 @@
             imageInput.value = '';
             image.src = "";
             deleteCookie('item');
+            errorSpan[0].style.display = 'none';
 
             // возврат кнопки добавления и удаление кнопок удаления и редактирования
             addButton.style.display = 'flex';
@@ -470,6 +471,7 @@
             resultCell.innerHTML = '';
             quantity.value = null;
             deleteCookie('craft');
+            errorSpan[1].style.display = 'none';
 
             // возврат кнопки добавления и удаление кнопок удаления и редактирования
             addButtonCraft.style.display = 'flex';
@@ -671,7 +673,7 @@
                 errorSpan[1].style.display = 'flex';
             }
 
-            postCrafts(createAllCraftsRequest());
+            // postCrafts(createAllCraftsRequest());
 
         } catch (error) {
             console.error("Error:", error);

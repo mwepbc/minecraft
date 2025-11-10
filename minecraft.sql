@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Окт 18 2025 г., 16:02
+-- Время создания: Ноя 10 2025 г., 16:01
 -- Версия сервера: 10.4.32-MariaDB
 -- Версия PHP: 8.0.30
 
@@ -50,7 +50,10 @@ INSERT INTO `crafts` (`id`, `crafting_item`, `pos_1`, `pos_2`, `pos_3`, `pos_4`,
 (1, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4),
 (2, 3, NULL, NULL, NULL, NULL, 2, NULL, NULL, 2, NULL, 4),
 (3, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, NULL),
-(4, 9, 7, 7, 7, 7, 7, 7, 7, 7, 7, NULL);
+(4, 9, 7, 7, 7, 7, 7, 7, 7, 7, 7, NULL),
+(9, 11, 7, NULL, 7, 7, NULL, 7, 7, 7, 7, NULL),
+(10, 10, NULL, NULL, NULL, 7, NULL, 7, 7, 7, 7, NULL),
+(12, 27, 2, 2, NULL, 2, 2, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -72,14 +75,18 @@ INSERT INTO `items` (`id`, `name`, `image`) VALUES
 (1, 'log', 'log.webp'),
 (2, 'planks', 'planks.png'),
 (3, 'stick', 'stick.webp'),
-(4, 'crafting table', 'crafting_table.webp'),
 (5, 'stone pickaxe', 'stone_pickaxe.png'),
-(6, 'wooden pickaxe', 'wooden_pickaxe.webp'),
 (7, 'iron ingot', 'iron_ingot.webp'),
 (8, 'iron nugget', 'iron_nugget.webp'),
 (9, 'iron block', 'iron_block.webp'),
 (10, 'cart', 'cart.webp'),
-(11, 'cauldron', 'cauldron.webp');
+(11, 'cauldron', 'cauldron.webp'),
+(14, 'cobblestone', 'cobblestone.webp'),
+(15, 'furnace', 'furnace.webp'),
+(21, 'chain', 'chain.webp'),
+(22, 'stone axe', 'stone_axe.webp'),
+(27, 'crafting table', 'crafting_table.webp'),
+(34, 'fdsfdsfds', 'tip.png');
 
 -- --------------------------------------------------------
 
@@ -102,7 +109,9 @@ INSERT INTO `users` (`id`, `login`, `password`, `role`) VALUES
 (1, 'admin', 'admin', 'admin'),
 (2, 'user', 'user', 'user'),
 (3, 'popa', 'popa', 'user'),
-(4, 'popka', 'popka', 'user');
+(4, 'popka', 'popka', 'user'),
+(9, 'fdsfds', 'fdsfsd', 'user'),
+(10, 'admin1', 'admin1', 'admin');
 
 --
 -- Индексы сохранённых таблиц
@@ -144,19 +153,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `crafts`
 --
 ALTER TABLE `crafts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT для таблицы `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
