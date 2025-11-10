@@ -30,10 +30,13 @@
                 <label for="role">РОЛЬ</label>
                 <select name="role" id="role">
                     <option value="admin">Администратор</option>
-                    <option value="user">Пользователь</option>
+                    <option value="user" selected>Пользователь</option>
                 </select>
             </div>
-            <p class="error"></p>
+            <span class="errorSpan">
+                <img src="assets/img/tip.png" alt="tip">
+                <p class="error"></p>
+            </span>
             <button>ПОДТВЕРДИТЬ</button>
         </div>
     </main>
@@ -41,6 +44,7 @@
 </body>
 
 <script>
+    let errorSpan = document.querySelector(".errorSpan");
     let error_p = document.querySelector(".error")
     let submit = document.querySelector('.form button');
 
@@ -53,12 +57,10 @@
         form.append("login", login.value);
         form.append("password", password.value);
         form.append("role", role.value);
+        form.append("function", 'insertUser');
 
-        const request1 = new Request("assets/functions/users/reg.php", {
+        const request1 = new Request("assets/functions/users.php", {
             method: "POST",
-            // headers: {
-            //     "Content-Type": "application/json",
-            // },
             body: form
         });
 
@@ -73,6 +75,7 @@
 
             if (result.error) {
                 error_p.innerHTML = result.error;
+                errorSpan.style.display = 'flex';
             } else {
                 window.location.href = 'auth.php'
             }

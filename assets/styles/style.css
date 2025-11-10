@@ -216,14 +216,26 @@ input, select{
     gap: 2vh;
 }
 
+.errorSpan{
+    display: none;
+    align-items: center;
+    gap: 2vw;
+    padding: 2vh;
+    background-color: #DEDEDE;
+    border: 7px solid #AAAAAA;
+}
+
+.errorSpan img{
+    height: 8vh;
+}
+
 .error{
-    color: #EE4451;
+    color: #733773;
 }
 
 /* админ панель */
 .actions{
     display: flex;
-    align-items: center;
     justify-content: space-between;
     width: 45%;
 }
@@ -245,6 +257,13 @@ input, select{
 #adminContainer{
     display: flex;
     justify-content: space-between;
+    align-items: start;
+}
+
+#itemForm{
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
 }
 
 #apply, #delete{
@@ -264,6 +283,7 @@ input, select{
 #craftForm{
     display: none;
     flex-direction: column;
+    gap: 2vh;
 }
 
 #craftDisplay{
@@ -272,8 +292,9 @@ input, select{
 }
 
 #craftDisplay input{
-    width: 10%;
+    width: 5vw;
 }
+
 
 /* список крафтов внизу */
 .craftsList{

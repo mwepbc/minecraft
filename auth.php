@@ -24,7 +24,10 @@
                 <label for="password">ПАРОЛЬ</label>
                 <input type="password" name="password" id="password">
             </div>
-            <p class="error"></p>
+            <span class="errorSpan">
+                <img src="assets/img/tip.png" alt="tip">
+                <p class="error"></p>
+            </span>
             <button>ПОДТВЕРДИТЬ</button>
         </div>
     </main>
@@ -32,7 +35,8 @@
 </body>
 
 <script>
-    let error_p = document.querySelector(".error")
+    let errorSpan = document.querySelector(".errorSpan");
+    let error_p = document.querySelector(".error");
     let submit = document.querySelector('.form button');
 
     let login = document.querySelector('#login');
@@ -42,15 +46,15 @@
         let form = new FormData();
         form.append("login", login.value);
         form.append("password", password.value);
+        form.append("function", 'auth');
 
-        const request1 = new Request("assets/functions/users/auth.php", {
+        const request1 = new Request("assets/functions/users.php", {
             method: "POST",
             // headers: {
             //     "Content-Type": "application/json",
             // },
             body: form
         });
-
         post(request1);
     });
 
@@ -61,9 +65,10 @@
 
             if (result.error) {
                 error_p.innerHTML = result.error;
+                errorSpan.style.display = 'flex';
             } else {
-                // кука будет жить 1 час
-                document.cookie = `user=${result.id}; max-age=3600`;
+                // кука будет жить полчаса
+                document.cookie = `user=${result.id}; max-age=1800; path=/`;
 
                 if (result.role == 'admin') {
                     window.location.href = 'admin.php'
@@ -71,7 +76,6 @@
                     window.location.href = 'index.php'
                 }
             }
-
         } catch (error) {
             console.error("Error:", error);
         }

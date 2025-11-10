@@ -3,6 +3,10 @@
         <img src="assets/img/logo.png" alt="logo" />
     </a>
     <nav>
+        <button id="admin" onclick="window.location.href='admin.php'">
+            АДМИН-ПАНЕЛЬ
+        </button>
+
         <button id="exit">
             ВЫХОД
         </button>
@@ -19,10 +23,7 @@
 <script src="assets/js/main.js"></script>
 <script>
     let exit = document.querySelector('#exit');
-    // let auth = document.querySelector('#auth');
-    // let reg = document.querySelector('#reg');
-
-    // let buttons = document.querySelectorAll('button');
+    let admin = document.querySelector('#admin');
 
     // если не существует юзерская кука, то он не авторизован,
     // значит появляются кнопки регистрации и входа
@@ -31,6 +32,31 @@
         reg.style.display = 'flex';
     } else {
         exit.style.display = 'flex';
+
+        // проверка админа
+        async function postAdmin(request) {
+            try {
+                const response = await fetch(request);
+                const result = await response.json();
+                console.log(result);
+
+                result ? admin.style.display = 'flex' : admin.style.display = 'none';
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        const requestAdmin = new Request("assets/functions/users.php", {
+            method: "POST",
+            // headers: {
+            //     "Content-Type": "application/json",
+            // },
+            body: JSON.stringify({
+                id_user: getCookie('user'),
+                function: 'adminVerify'
+            }),
+        });
+        postAdmin(requestAdmin);
     }
 
     // при нажатии на кнопку выхода, удаляется кука юзера

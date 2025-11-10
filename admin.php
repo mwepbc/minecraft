@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="actions">
-                <div class="form" id="itemForm" enctype="multipart/form-data">
+                <div id="itemForm" enctype="multipart/form-data">
                     <span>
                         <input type="text" name="name" id="name" placeholder="Имя предмета...">
                         <input type="file" name="image_url" id="file">
@@ -52,7 +52,10 @@
                         <button id="delete">Удалить</button>
                         <button id="add">Создать</button>
                     </span>
-                    <p class="error"></p>
+                    <span class="errorSpan">
+                        <img src="assets/img/tip.png" alt="tip">
+                        <p class="error"></p>
+                    </span>
                 </div>
                 <div id="craftForm">
                     <span id="craftDisplay">
@@ -91,9 +94,14 @@
                     </span>
 
                     <span class="buttons">
-                        <button id="apply">Подтвердить</button>
-                        <button id="delete">Удалить</button>
-                        <button id="add">Создать</button>
+                        <button id="applyCraft">Подтвердить</button>
+                        <button id="deleteCraft">Удалить</button>
+                        <button id="addCraft">Создать</button>
+                    </span>
+
+                    <span class="errorSpan">
+                        <img src="assets/img/tip.png" alt="tip">
+                        <p class="error"></p>
                     </span>
                 </div>
             </div>
@@ -103,7 +111,6 @@
                 <table class="craftingTable">
                     <tr>
                         <td>
-                            <img src="assets/img/${element.image_1}" alt="${element.pos_1}">
                         </td>
                         <td>
                         </td>
@@ -142,7 +149,9 @@
     let craftForm = document.querySelector('#craftForm');
 
     const items = document.querySelector('.listCells');
-    let error_p = document.querySelector(".error")
+
+    let errorSpan = document.querySelectorAll('.errorSpan');
+    let error_p = document.querySelectorAll(".error")
 
     // кнопки справа
     let applyButton = document.querySelector('#apply');
@@ -203,6 +212,7 @@
             nameInput.value = '';
             imageInput.value = '';
             image.src = "";
+            deleteCookie('item');
 
             // возврат кнопки добавления и удаление кнопок удаления и редактирования
             addButton.style.display = 'flex';
@@ -227,6 +237,25 @@
     }
     postItems(createAllItemsRequest());
 
+    async function postDif(request) {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
+            console.log(result);
+
+            // вывод инфы в поля справа
+            nameInput.value = result.name;
+            image.src = `assets/img/${result.image}`;
+            document.cookie = `item=${result.id}; max-age=3600; path=/`;
+
+            addButton.style.display = 'none';
+            deleteButton.style.display = 'flex';
+            applyButton.style.display = 'flex';
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     let nameInput = document.querySelector('#name');
     let image = document.querySelector('#image');
     let imageInput = document.querySelector('#file');
@@ -241,12 +270,14 @@
         reader.readAsDataURL(file);
     })
 
+    // добавление предмета
     addButton.addEventListener('click', () => {
         let name = nameInput.value;
         let image = imageInput.files[0];
 
         if (!name || !image) {
-            error_p.innerHTML = "Заполните все поля";
+            error_p[0].innerHTML = "Заполните все поля";
+            errorSpan[0].style.display = 'flex';
         } else {
             let formData = new FormData();
             formData.append('function', 'insertItem');
@@ -264,7 +295,24 @@
             postInsert(requestInsert);
         }
     });
+    async function postInsert(request) {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
 
+            if (result.error) {
+                error_p[0].innerHTML = result.error;
+                errorSpan[0].style.display = 'flex';
+            }
+
+            postItems(createAllItemsRequest());
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // удаление предмета
     deleteButton.addEventListener('click', () => {
         const requestDelete = new Request("assets/functions/items.php", {
             method: "POST",
@@ -279,13 +327,29 @@
 
         postDelete(requestDelete);
     });
+    async function postDelete(request) {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
+            console.log(result);
 
+            if (result.error) {
+                error_p.innerHTML = result.error;
+            }
+
+            postItems(createAllItemsRequest());
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // изменение предмета
     applyButton.addEventListener('click', () => {
         let name = nameInput.value;
         let image = imageInput.files[0];
 
         if (!name) {
-            error_p.innerHTML = "Имя не должно быть пустым";
+            error_p[0].innerHTML = "Имя не должно быть пустым";
         } else {
             let formData = new FormData();
             formData.append('function', 'updateItem');
@@ -304,59 +368,6 @@
             postUpdate(requestUpdate);
         }
     });
-
-    //post для отправки selectDif и отображения характеристик предмета
-    async function postDif(request) {
-        try {
-            const response = await fetch(request);
-            const result = await response.json();
-            console.log(result);
-
-            // вывод инфы в поля справа
-            nameInput.value = result.name;
-            image.src = `assets/img/${result.image}`;
-            document.cookie = `item=${result.id}; max-age=3600`;
-
-            addButton.style.display = 'none';
-            deleteButton.style.display = 'flex';
-            applyButton.style.display = 'flex';
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    }
-
-    async function postInsert(request) {
-        try {
-            const response = await fetch(request);
-            const result = await response.json();
-
-            if (result.error) {
-                error_p.innerHTML = result.error;
-            }
-
-            postItems(createAllItemsRequest());
-
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    }
-
-    async function postDelete(request) {
-        try {
-            const response = await fetch(request);
-            const result = await response.json();
-            console.log(result);
-
-            if (result.error) {
-                error_p.innerHTML = result.error;
-            }
-
-            postItems(createAllItemsRequest());
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    }
-
     async function postUpdate(request) {
         try {
             const response = await fetch(request);
@@ -364,7 +375,8 @@
             console.log(result);
 
             if (result.error) {
-                error_p.innerHTML = result.error;
+                error_p[0].innerHTML = result.error;
+                errorSpan[0].style.display = 'flex';
             }
 
             postItems(createAllItemsRequest());
@@ -372,6 +384,8 @@
             console.error("Error:", error);
         }
     }
+
+
 
     // КРАФТЫ
     let crafts = document.querySelector('.craftsList');
@@ -386,10 +400,10 @@
             result.forEach(element => {
                 let cell = document.createElement('div');
                 cell.className = "craft";
-                cell.setAttribute('itemCraftId', element.result_id);
+                cell.setAttribute('id_craft', element.id);
 
                 cell.innerHTML = `
-                        <table class="craftingTable" itemCraftId="${element.result_id}">
+                        <table class="craftingTable" id_craft="${element.id}">
                             <tr>
                                 <td>
                                     <img src="assets/img/${element.slot1}" alt="">
@@ -427,7 +441,7 @@
                             </tr>
                         </table>
                         <div class="result">
-                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" itemCraftId="${element.result_id}">
+                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" id_craft="${element.id}">
                         </div>
                     `;
 
@@ -438,26 +452,29 @@
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            id_item: event.target.getAttribute('itemCraftId'),
-                            function: 'defeniteCraft'
+                            id_craft: event.target.getAttribute('id_craft'),
+                            function: 'craftForId'
                         })
                     });
 
-                    postDif(requestDif);
+                    postDifCraft(requestDif);
                 });
 
                 crafts.appendChild(cell);
             });
 
-            // // очистка полей
-            // nameInput.value = '';
-            // imageInput.value = '';
-            // image.src = "";
+            // очистка полей
+            craftingCells.forEach(element => {
+                element.innerHTML = '';
+            });
+            resultCell.innerHTML = '';
+            quantity.value = null;
+            deleteCookie('craft');
 
-            // // возврат кнопки добавления и удаление кнопок удаления и редактирования
-            // addButton.style.display = 'flex';
-            // deleteButton.style.display = 'none';
-            // applyButton.style.display = 'none';
+            // возврат кнопки добавления и удаление кнопок удаления и редактирования
+            addButtonCraft.style.display = 'flex';
+            deleteButtonCraft.style.display = 'none';
+            applyButtonCraft.style.display = 'none';
 
         } catch (error) {
             console.error("Error:", error);
@@ -479,29 +496,183 @@
 
     const craftingCells = document.querySelectorAll('#craftDisplay .craftingTable td');
     const resultCell = document.querySelector('#craftDisplay .result');
+    const quantity = document.querySelector('#quantity');
+    // кнопки справа
+    let applyButtonCraft = document.querySelector('#applyCraft');
+    let deleteButtonCraft = document.querySelector('#deleteCraft');
+    let addButtonCraft = document.querySelector('#addCraft');
 
     //post для отправки selectDif и отображения крафта
-    async function postDif(request) {
+    async function postDifCraft(request) {
         try {
             const response = await fetch(request);
             const result = await response.json();
             console.log(result);
 
-            craftingCells[0].innerHTML = `<img src = "assets/img/${result.slot1}" alt="" >`
-            craftingCells[1].innerHTML = `<img src = "assets/img/${result.slot2}" alt="" >`
-            craftingCells[2].innerHTML = `<img src = "assets/img/${result.slot3}" alt="" >`
-            craftingCells[3].innerHTML = `<img src = "assets/img/${result.slot4}" alt="" >`
-            craftingCells[4].innerHTML = `<img src = "assets/img/${result.slot5}" alt="" >`
-            craftingCells[5].innerHTML = `<img src = "assets/img/${result.slot6}" alt="" >`
-            craftingCells[6].innerHTML = `<img src = "assets/img/${result.slot7}" alt="" >`
-            craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" >`
-            craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" >`
+            craftingCells[0].innerHTML = `<img src = "assets/img/${result.slot1}" alt="" id_item="${result.id1}">`
+            craftingCells[1].innerHTML = `<img src = "assets/img/${result.slot2}" alt="" id_item="${result.id2}">`
+            craftingCells[2].innerHTML = `<img src = "assets/img/${result.slot3}" alt="" id_item="${result.id3}">`
+            craftingCells[3].innerHTML = `<img src = "assets/img/${result.slot4}" alt="" id_item="${result.id4}">`
+            craftingCells[4].innerHTML = `<img src = "assets/img/${result.slot5}" alt="" id_item="${result.id5}">`
+            craftingCells[5].innerHTML = `<img src = "assets/img/${result.slot6}" alt="" id_item="${result.id6}">`
+            craftingCells[6].innerHTML = `<img src = "assets/img/${result.slot7}" alt="" id_item="${result.id7}">`
+            craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" id_item="${result.id8}">`
+            craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" id_item="${result.id9}">`
 
             resultCell.innerHTML = `<img src="assets/img/${result.result}" alt="">`;
-            // if (result.quantity != null) {
-            //     resultCell.innerHTML += `<p>${result.quantity}</p>`;
-            // }
-            document.querySelector('#quantity').value = result.quantity;
+            quantity.value = result.quantity;
+
+            document.cookie = `craft=${result.id}; max-age=3600; path=/`;
+
+            addButtonCraft.style.display = 'none';
+            deleteButtonCraft.style.display = 'flex';
+            applyButtonCraft.style.display = 'flex';
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // удаление крафта
+    deleteButtonCraft.addEventListener('click', () => {
+        const requestDelete = new Request("assets/functions/crafts.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "id_craft": getCookie('craft'),
+                function: "deleteCraft"
+            })
+        });
+
+        postDeleteCraft(requestDelete);
+    });
+
+    async function postDeleteCraft(request) {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
+            console.log(result);
+
+            if (result.error) {
+                error_p[1].innerHTML = result.error;
+                errorSpan[1].style.display = 'flex';
+            }
+            postCrafts(createAllCraftsRequest());
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // добавление крафта
+    // отдельные функции на заполнение ячеек
+    craftingCells.forEach(element => {
+        element.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            element.innerHTML = '';
+        });
+
+        element.addEventListener('click', (event) => {
+            if (getCookie('item') !== undefined) {
+                async function getItem(request) {
+                    try {
+                        const response = await fetch(request);
+                        const result = await response.json();
+                        console.log(result);
+
+                        element.innerHTML = `<img src = "assets/img/${result.image}" alt="${result.name}" id_item="${result.id}">`;
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                }
+                const requestCurrentItem = new Request("assets/functions/items.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_item: getCookie('item'),
+                        function: 'defeniteItem'
+                    }),
+                });
+
+                getItem(requestCurrentItem);
+            }
+        });
+    });
+    // отдельно для поля результата
+    resultCell.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        resultCell.innerHTML = '';
+    });
+    resultCell.addEventListener('click', (event) => {
+        if (getCookie('item') !== undefined) {
+            async function getItem(request) {
+                try {
+                    const response = await fetch(request);
+                    const result = await response.json();
+                    console.log(result);
+
+                    resultCell.innerHTML = `<img src = "assets/img/${result.image}" alt="${result.name}" id_item="${result.id}">`;
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+            const requestCurrentItem = new Request("assets/functions/items.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_item: getCookie('item'),
+                    function: 'defeniteItem'
+                }),
+            });
+
+            getItem(requestCurrentItem);
+        }
+    });
+
+    addButtonCraft.addEventListener('click', () => {
+        // создаем формдату и заполняем её всем необходимым
+        let formDataCraft = new FormData();
+
+        // сразу обозначаем исполняемую функцию
+        formDataCraft.append('function', 'insertCraft');
+
+        // добавление айди результата
+        !(resultCell.firstElementChild == null) ? formDataCraft.append('result_id', resultCell.firstElementChild.getAttribute('id_item')): formDataCraft.append('result_id', null);
+
+        // добавление количества
+        quantity.value == "" ? formDataCraft.append('quantity', null) : formDataCraft.append('quantity', quantity.value);
+
+        // добавление ячеек крафта
+        craftingCells.forEach((element, index) => {
+            !(element.firstElementChild == null) ? formDataCraft.append(`slot${index}`, element.firstElementChild.getAttribute('id_item')): formDataCraft.append(`slot${index}`, null);
+        });
+
+        console.log(formDataCraft);
+
+        const requestInsert = new Request("assets/functions/crafts.php", {
+            method: "POST",
+            body: formDataCraft
+        });
+
+        postInsertCraft(requestInsert);
+    });
+
+    async function postInsertCraft(request) {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
+
+            if (result.error) {
+                error_p[1].innerHTML = result.error;
+                errorSpan[1].style.display = 'flex';
+            }
+
+            postCrafts(createAllCraftsRequest());
+
         } catch (error) {
             console.error("Error:", error);
         }

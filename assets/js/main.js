@@ -13,5 +13,5 @@ function getCookie(name) {
 
 // удаление куки
 function deleteCookie(name) {
-  document.cookie = `user=${name}; max-age=0`;
+  document.cookie = `${name}=; max-age=0; path=/`;
 }
