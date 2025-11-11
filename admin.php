@@ -521,7 +521,7 @@
             craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" id_item="${result.id8}">`
             craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" id_item="${result.id9}">`
 
-            resultCell.innerHTML = `<img src="assets/img/${result.result}" alt="">`;
+            resultCell.innerHTML = `<img src="assets/img/${result.result}" alt="" id_item="${result.result_id}">`;
             quantity.value = result.quantity;
 
             document.cookie = `craft=${result.id}; max-age=3600; path=/`;
@@ -653,8 +653,6 @@
             !(element.firstElementChild == null) ? formDataCraft.append(`slot${index}`, element.firstElementChild.getAttribute('id_item')): formDataCraft.append(`slot${index}`, null);
         });
 
-        console.log(formDataCraft);
-
         const requestInsert = new Request("assets/functions/crafts.php", {
             method: "POST",
             body: formDataCraft
@@ -673,8 +671,54 @@
                 errorSpan[1].style.display = 'flex';
             }
 
-            // postCrafts(createAllCraftsRequest());
+            postCrafts(createAllCraftsRequest());
 
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // изменение крафта
+    applyButtonCraft.addEventListener('click', () => {
+        // создаем формдату и заполняем её всем необходимым
+        let formDataCraft = new FormData();
+
+        // сразу обозначаем исполняемую функцию
+        formDataCraft.append('function', 'updateCraft');
+
+        // отправляем айдишник крафта
+        formDataCraft.append('id_craft', getCookie('craft'));
+
+        // добавление айди результата
+        !(resultCell.firstElementChild == null) ? formDataCraft.append('result_id', resultCell.firstElementChild.getAttribute('id_item')): formDataCraft.append('result_id', null);
+
+        // добавление количества
+        quantity.value == "" ? formDataCraft.append('quantity', null) : formDataCraft.append('quantity', quantity.value);
+
+        // добавление ячеек крафта
+        craftingCells.forEach((element, index) => {
+            !(element.firstElementChild == null) ? formDataCraft.append(`slot${index}`, element.firstElementChild.getAttribute('id_item')): formDataCraft.append(`slot${index}`, null);
+        });
+
+        const requestUpdate = new Request("assets/functions/crafts.php", {
+            method: "POST",
+            body: formDataCraft
+        });
+
+        postUpdateCraft(requestUpdate);
+    });
+    async function postUpdateCraft(request) {
+        try {
+            const response = await fetch(request);
+            const result = await response.json();
+            console.log(result);
+
+            if (result.error) {
+                error_p[1].innerHTML = result.error;
+                errorSpan[1].style.display = 'flex';
+            }
+
+            postCrafts(createAllCraftsRequest());
         } catch (error) {
             console.error("Error:", error);
         }
