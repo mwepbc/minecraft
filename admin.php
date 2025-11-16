@@ -188,7 +188,7 @@
                 cell.setAttribute('id_item', element.id);
 
                 cell.innerHTML = `
-                        <img src="assets/img/${element.image}" alt="${element.name}" id_item="${element.id}">
+                        <img src="assets/img/${element.image}" title="${element.name}" alt="${element.name}" id_item="${element.id}">
                     `;
 
                 cell.addEventListener('click', (event) => {
@@ -304,10 +304,8 @@
             if (result.error) {
                 error_p[0].innerHTML = result.error;
                 errorSpan[0].style.display = 'flex';
-            }
-
-            postItems(createAllItemsRequest());
-
+            } else
+                postItems(createAllItemsRequest());
         } catch (error) {
             console.error("Error:", error);
         }
@@ -335,10 +333,10 @@
             console.log(result);
 
             if (result.error) {
-                error_p.innerHTML = result.error;
-            }
-
-            postItems(createAllItemsRequest());
+                error_p[0].innerHTML = result.error;
+                errorSpan[0].style.display = 'flex';
+            } else
+                postItems(createAllItemsRequest());
         } catch (error) {
             console.error("Error:", error);
         }
@@ -350,6 +348,7 @@
         let image = imageInput.files[0];
 
         if (!name) {
+            errorSpan[0].style.display = 'flex';
             error_p[0].innerHTML = "Имя не должно быть пустым";
         } else {
             let formData = new FormData();
@@ -378,9 +377,8 @@
             if (result.error) {
                 error_p[0].innerHTML = result.error;
                 errorSpan[0].style.display = 'flex';
-            }
-
-            postItems(createAllItemsRequest());
+            } else
+                postItems(createAllItemsRequest());
         } catch (error) {
             console.error("Error:", error);
         }
@@ -441,10 +439,23 @@
                                 </td>
                             </tr>
                         </table>
-                        <div class="result">
+                        
+                    `;
+
+                if (element.quantity != null) {
+                    cell.innerHTML += `
+                    <div class="result">
                             <img src="assets/img/${element.result_img}" alt="${element.result_name}" id_craft="${element.id}">
+                            <p>${element.quantity}</p>
                         </div>
                     `;
+                } else {
+                    cell.innerHTML += `
+                    <div class="result">
+                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" id_craft="${element.id}">
+                    </div>
+                    `;
+                }
 
                 cell.addEventListener('click', (event) => {
                     const requestDif = new Request("assets/functions/crafts.php", {
@@ -521,7 +532,7 @@
             craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" id_item="${result.id8}">`
             craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" id_item="${result.id9}">`
 
-            resultCell.innerHTML = `<img src="assets/img/${result.result}" alt="" id_item="${result.result_id}">`;
+            resultCell.innerHTML = `<img src="assets/img/${result.result_img}" alt="" id_item="${result.result_id}">`;
             quantity.value = result.quantity;
 
             document.cookie = `craft=${result.id}; max-age=3600; path=/`;
@@ -529,6 +540,9 @@
             addButtonCraft.style.display = 'none';
             deleteButtonCraft.style.display = 'flex';
             applyButtonCraft.style.display = 'flex';
+
+            craftForm.style.display = 'flex';
+            itemForm.style.display = 'none';
         } catch (error) {
             console.error("Error:", error);
         }
@@ -559,8 +573,8 @@
             if (result.error) {
                 error_p[1].innerHTML = result.error;
                 errorSpan[1].style.display = 'flex';
-            }
-            postCrafts(createAllCraftsRequest());
+            } else
+                postCrafts(createAllCraftsRequest());
         } catch (error) {
             console.error("Error:", error);
         }
@@ -669,9 +683,8 @@
             if (result.error) {
                 error_p[1].innerHTML = result.error;
                 errorSpan[1].style.display = 'flex';
-            }
-
-            postCrafts(createAllCraftsRequest());
+            } else
+                postCrafts(createAllCraftsRequest());
 
         } catch (error) {
             console.error("Error:", error);
@@ -716,9 +729,8 @@
             if (result.error) {
                 error_p[1].innerHTML = result.error;
                 errorSpan[1].style.display = 'flex';
-            }
-
-            postCrafts(createAllCraftsRequest());
+            } else
+                postCrafts(createAllCraftsRequest());
         } catch (error) {
             console.error("Error:", error);
         }

@@ -74,15 +74,16 @@
         try {
             const response = await fetch(request);
             const result = await response.json();
+            console.log(result);
             list.innerHTML = '';
 
             result.forEach(element => {
                 let cell = document.createElement('div');
                 cell.className = "cell";
-                cell.setAttribute('id_item', element.result_id);
+                cell.setAttribute('id_craft', element.id);
 
                 cell.innerHTML = `
-                        <img src="assets/img/${element.result_img}" alt=${element.result_name} id_item="${element.result_id}">
+                        <img src="assets/img/${element.result_img}" title="${element.result_name}" alt="${element.result_name}" id_craft="${element.id}">
                     `;
 
                 cell.addEventListener('click', (event) => {
@@ -92,8 +93,8 @@
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            id_item: event.target.getAttribute('id_item'),
-                            function: 'defeniteCraft'
+                            id_craft: event.target.getAttribute('id_craft'),
+                            function: 'craftForId'
                         })
                     });
 
@@ -127,7 +128,7 @@
         try {
             const response = await fetch(request);
             const result = await response.json();
-            console.log("Success:", result);
+            console.log(result);
 
             craftingCells[0].innerHTML = `<img src = "assets/img/${result.slot1}" alt="" >`
             craftingCells[1].innerHTML = `<img src = "assets/img/${result.slot2}" alt="" >`
@@ -139,7 +140,7 @@
             craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" >`
             craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" >`
 
-            resultCell.innerHTML = `<img src="assets/img/${result.result}" alt="">`;
+            resultCell.innerHTML = `<img src="assets/img/${result.result_img}" alt="${result.result_name}">`;
             if (result.quantity != null) {
                 resultCell.innerHTML += `<p>${result.quantity}</p>`;
             }

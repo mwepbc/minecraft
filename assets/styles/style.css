@@ -130,6 +130,7 @@ h1{
 }
 
 .cell, .result, #image {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -331,4 +332,18 @@ input, select{
     width: 40px;
     height: 40px;
     border: #553824 solid 7px;
+}
+
+/* псевдоэлемент на подпись */
+.caption{
+    content: 'железный топор';
+    position: absolute;
+
+    display: flex;
+
+    padding: 0.5vh 2vw;
+
+    border: #29073A 10px solid;
+    background-color: #15011cc1;
+    color: white;
 }
