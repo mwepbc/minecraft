@@ -439,7 +439,6 @@
                                 </td>
                             </tr>
                         </table>
-                        
                     `;
 
                 if (element.quantity != null) {
@@ -510,6 +509,7 @@
     const craftingCells = document.querySelectorAll('#craftDisplay .craftingTable td');
     const resultCell = document.querySelector('#craftDisplay .result');
     const quantity = document.querySelector('#quantity');
+
     // кнопки справа
     let applyButtonCraft = document.querySelector('#applyCraft');
     let deleteButtonCraft = document.querySelector('#deleteCraft');

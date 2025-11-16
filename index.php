@@ -16,7 +16,7 @@
             <div class="listhead">
                 <div class="search">
                     <img src="assets/img/search.webp" alt="search">
-                    <input type="search">
+                    <input type="search" placeholder="Поиск...">
                 </div>
                 <img src="assets/img/Recipe Button.png" alt="filter">
             </div>

@@ -91,6 +91,7 @@ function updateItem($dbh, $id, $name, $file)
 // удаление инфы
 function deleteItem($dbh, $id)
 {
+    // проверяются абсолютно все позиции в крафтах
     $sth = $dbh->prepare('
         SELECT * FROM crafts
         WHERE crafting_item = ?
@@ -106,12 +107,23 @@ function deleteItem($dbh, $id)
     $sth->execute([$id, $id, $id, $id, $id, $id, $id, $id, $id, $id]);
     $craft = $sth->fetch(PDO::FETCH_ASSOC);
 
-
+    // если хоть где-то замешан удаляемый предмет — кидаем ошибку
     if ($craft) {
         echo json_encode([
             'error' => 'Этот предмет задействован в рецепте крафта! Удалите/измените рецепты связанных крафтов'
         ]);
-    } else {
+        exit();
+    } else{
+        // происходит поиск предмета
+        $sth = $dbh->prepare('
+        SELECT * FROM items
+        WHERE id = ?;');
+        $sth->execute([$id]);
+        $item = $sth->fetch(PDO::FETCH_ASSOC);
+        // удаление картинки этого предмета с сервера
+        unlink('../img/' . $item['image']);
+
+        // удаление самого предмета из базы
         $sth = $dbh->prepare('
         DELETE FROM `items`
         WHERE `items`.`id` = ?');
@@ -147,5 +159,5 @@ try {
             break;
     }
 } catch (\Throwable $th) {
-    echo json_encode(['error'=>$th->getMessage()]);
+    echo json_encode(['error' => $th->getMessage()]);
 }
