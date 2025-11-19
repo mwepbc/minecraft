@@ -1,6 +1,6 @@
 <header>
     <a href="index.php">
-        <img src="assets/img/logo.png" alt="logo" />
+        <img src="assets/img/logo.png" alt="logo" id="logo"/>
     </a>
     <nav>
         <button id="admin" onclick="window.location.href='admin.php'">

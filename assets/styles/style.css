@@ -31,6 +31,10 @@ header button{
     display: none;
 }
 
+#logo{
+    height: 10vh;
+}
+
 button {
     padding: 3vh 3vw;
 
@@ -88,7 +92,7 @@ h1{
     align-items: center;
 }
 
-.listhead img{
+.search img{
     width: 3vw;
 }
 
@@ -151,7 +155,7 @@ h1{
     position: relative;
 }
 
-.result  p{
+.result p{
     position: absolute;
     right: 10%; bottom: 10%;
 

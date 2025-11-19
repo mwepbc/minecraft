@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="assets/img/favicon.ico" rel="icon" type="image/x-icon">
-    <title>minecraft</title>
+    <title>recipecraft</title>
     <link rel="stylesheet" href="assets/styles/style.css">
 </head>
 
@@ -16,11 +16,9 @@
             <div class="listhead">
                 <div class="search">
                     <img src="assets/img/search.webp" alt="search">
-                    <input type="search" placeholder="Поиск...">
+                    <input type="search" placeholder="Поиск..." id="search">
                 </div>
-                <img src="assets/img/Recipe Button.png" alt="filter">
             </div>
-
             <div class="listCells">
             </div>
 
@@ -70,11 +68,17 @@
 <script>
     let list = document.querySelector('.listCells');
 
-    async function post(request) {
+    async function postCrafts(request) {
         try {
             const response = await fetch(request);
-            const result = await response.json();
-            console.log(result);
+            const resultData = await response.json();
+
+            let result = [];
+            resultData.forEach(element => {
+                if (element.result_name.includes(search.value))
+                    result.push(element);
+            });
+
             list.innerHTML = '';
 
             result.forEach(element => {
@@ -108,17 +112,18 @@
         }
     }
 
-    const request1 = new Request("assets/functions/crafts.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            function: "allCrafts"
-        }),
-    });
-
-    post(request1);
+    function createAllCraftsRequest() {
+        return new Request("assets/functions/crafts.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                function: "allCrafts"
+            })
+        });
+    }
+    postCrafts(createAllCraftsRequest());
 
     const craftingCells = document.querySelectorAll('.craftingTable td');
     const resultCell = document.querySelector('.result');
@@ -148,6 +153,10 @@
             console.error("Error:", error);
         }
     }
+
+    // поиск
+    let search = document.querySelector('#search');
+    search.addEventListener('input', () => {postCrafts(createAllCraftsRequest());});
 </script>
 
 </html>

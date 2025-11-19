@@ -28,7 +28,6 @@
                         <img src="assets/img/search.webp" alt="search">
                         <input type="search" placeholder="Поиск...">
                     </div>
-                    <img src="assets/img/Recipe Button.png" alt="filter" id="filter">
                 </div>
 
                 <div class="listCells">
@@ -106,38 +105,12 @@
                 </div>
             </div>
         </div>
+        <div class="search">
+            <img src="assets/img/search.webp" alt="search">
+            <input type="search" placeholder="Поиск...">
+        </div>
         <div class="craftsList">
-            <div class="craft">
-                <table class="craftingTable">
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                </table>
-                <div class="result">
-                    <img src="assets/img/cart.webp" alt="">
-                </div>
-            </div>
+
         </div>
     </main>
     <?php include('assets/includes/footer.php') ?>
@@ -163,22 +136,13 @@
     async function postItems(request, sort = 'a-z') {
         try {
             const response = await fetch(request);
-            const result = await response.json();
-            console.log(result);
+            const resultData = await response.json();
 
-            // сортировка
-            // switch (sort) {
-            //     case "a-z":
-            //         result.sort((a, b) => a.name.localeCompare(b.name));
-            //         break;
-
-            //     case "z-a":
-            //         result.sort((a, b) => a.name.localeCompare(b.name));
-            //         break;
-
-            //     default:
-            //         break;
-            // }
+            let result = [];
+            resultData.forEach(element => {
+                if (element.name.includes(search[0].value))
+                    result.push(element);
+            });
 
             items.innerHTML = '';
 
@@ -391,8 +355,13 @@
     async function postCrafts(request, sort = 'a-z') {
         try {
             const response = await fetch(request);
-            const result = await response.json();
-            console.log(result);
+            const resultData = await response.json();
+
+            let result = [];
+            resultData.forEach(element => {
+                if (element.result_name.includes(search[1].value))
+                    result.push(element);
+            });
 
             crafts.innerHTML = '';
 
@@ -444,14 +413,14 @@
                 if (element.quantity != null) {
                     cell.innerHTML += `
                     <div class="result">
-                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" id_craft="${element.id}">
+                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" title="${element.result_name}" id_craft="${element.id}">
                             <p>${element.quantity}</p>
                         </div>
                     `;
                 } else {
                     cell.innerHTML += `
                     <div class="result">
-                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" id_craft="${element.id}">
+                            <img src="assets/img/${element.result_img}" alt="${element.result_name}" title="${element.result_name}" id_craft="${element.id}">
                     </div>
                     `;
                 }
@@ -532,7 +501,7 @@
             craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" id_item="${result.id8}">`
             craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" id_item="${result.id9}">`
 
-            resultCell.innerHTML = `<img src="assets/img/${result.result_img}" alt="" id_item="${result.result_id}">`;
+            resultCell.innerHTML = `<img src="assets/img/${result.result_img}" title="${result.result_name}" alt="${result.result_name}" id_item="${result.result_id}">`;
             quantity.value = result.quantity;
 
             document.cookie = `craft=${result.id}; max-age=3600; path=/`;
@@ -736,22 +705,16 @@
         }
     }
 
-    // filterButton.addEventListener('click', () => {
-    //     postItems(createAllItemsRequest(), 'z-a');
-    // })
-
-    // функция для изменения фона выбранного предмета
-    // передается список элементов, и если айдишник элемента совпадает с ауди в куке, то
-    // элементу придается айдишник выбранного элемента
-    // function currentItem(list) {
-    //     list.forEach(element => {
-    //         if (getCookie(id_item) == element.getAttribute('id_item')) {
-    //             element.setAttribute('id_item', 'current')
-    //         } else {
-    //             element.removeAttribute('id');
-    //         }
-    //     });
-    // }
+    // поиск
+    let search = document.querySelectorAll('.search input');
+    // поиск для предметов
+    search[0].addEventListener('input', () => {
+        postItems(createAllItemsRequest());
+    });
+    // поиск для крафтов
+    search[1].addEventListener('input', () => {
+        postCrafts(createAllCraftsRequest());
+    });
 </script>
 
 </html>
