@@ -40,6 +40,7 @@ button {
 
     color: white;
     background: #128947;
+    word-spacing: 0.5vw;
     border: black 2px solid;
 
     box-shadow: inset 0px 7px #35CE49, inset 0 -7px #0B4E2D;
@@ -221,8 +222,12 @@ input, select{
     gap: 2vh;
 }
 
-.errorSpan{
+.form>div:nth-last-child(2){
     display: none;
+    flex-direction: row;
+}
+
+.errorSpan{
     align-items: center;
     gap: 2vw;
     padding: 2vh;
@@ -350,4 +355,20 @@ input, select{
     border: #29073A 10px solid;
     background-color: #15011cc1;
     color: white;
+}
+
+/* страница 404 */
+#page404>div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4vh;
+
+    color: white;
+    font-size: 3vh;
+}
+
+#page404 h1{
+    font-size: 28vh;
 }

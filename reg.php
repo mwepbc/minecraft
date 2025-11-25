@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="assets/img/favicon.ico" rel="icon" type="image/x-icon">
-    <title>Регистрация</title>
+    <title>Регистрация — RecipeCraft</title>
     <link rel="stylesheet" href="assets/styles/style.css">
 </head>
 
@@ -33,10 +33,10 @@
                     <option value="user" selected>Пользователь</option>
                 </select>
             </div>
-            <span class="errorSpan">
+            <div class="errorSpan">
                 <img src="assets/img/tip.png" alt="tip">
                 <p class="error"></p>
-            </span>
+            </div>
             <button>ПОДТВЕРДИТЬ</button>
         </div>
     </main>

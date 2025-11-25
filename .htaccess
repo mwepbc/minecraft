@@ -1,0 +1,42 @@
+RewriteEngine On
+
+
+# редирект некорректного url на 404
+ErrorDocument 404 /minecraft//404.php
+
+# запрет индексации служебных, ненадобных страниц
+<FilesMatch "^(auth|reg|admin)\.php$">
+  Header set X-Robots-Tag "noindex, nofollow"
+</FilesMatch>
+
+
+# запрет просмотра структуры сайта
+Options -Indexes
+
+# защита от DOS-атак
+LimitRequestBody 10240000
+
+# сжатие картинок
+<ifModule mod_gzip.c>
+mod_gzip_on Yes
+mod_gzip_dechunk Yes
+mod_gzip_item_include file \.(html?|txt|css|js|php|pl)$
+mod_gzip_item_include handler ^cgi-script$
+mod_gzip_item_include mime ^text/.*
+mod_gzip_item_include mime ^application/x-javascript.*
+mod_gzip_item_exclude mime ^image/.*
+mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
+
+# усиливание кеширования на 1 неделю
+FileETag MTime Size
+<ifmodule mod_expires.c>
+<filesmatch “.(jpg|gif|png|css|js)$”>
+ExpiresActive on
+ExpiresDefault “access plus 1 week”
+</filesmatch>
+</ifmodule>
+
+# установка email администратора
+ServerSignature EMail
+SetEnv SERVER_ADMIN dilyara200712@mail.ru

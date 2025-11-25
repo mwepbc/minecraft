@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link href="assets/img/favicon.ico" rel="icon" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация</title>
+    <title>Войти — RecipeCraft</title>
     <link rel="stylesheet" href="assets/styles/style.css">
 </head>
 
@@ -24,17 +24,16 @@
                 <label for="password">ПАРОЛЬ</label>
                 <input type="password" name="password" id="password">
             </div>
-            <span class="errorSpan">
+            <div class="errorSpan">
                 <img src="assets/img/tip.png" alt="tip">
                 <p class="error"></p>
-            </span>
+            </div>
             <button>ПОДТВЕРДИТЬ</button>
         </div>
     </main>
     <?php include("assets/includes/footer.php") ?>
-</body>
-
-<script>
+    
+    <script>
     let errorSpan = document.querySelector(".errorSpan");
     let error_p = document.querySelector(".error");
     let submit = document.querySelector('.form button');
@@ -81,5 +80,6 @@
         }
     }
 </script>
+</body>
 
 </html>

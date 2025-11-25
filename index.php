@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="assets/img/favicon.ico" rel="icon" type="image/x-icon">
-    <title>recipecraft</title>
+    <title>Справочник рецептов крафтов Майнкрафт — RecipeCraft</title>
     <link rel="stylesheet" href="assets/styles/style.css">
+	<meta name="description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры."/>
+<meta name="keywords" content="майнкрафт,minecraft,рецепты,как сделать,крафт,рецепт майнкрафт,как сделать в майнкрафте, майнкрафт крафт, верстак">
 </head>
 
 <body>

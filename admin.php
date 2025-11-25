@@ -51,10 +51,10 @@
                         <button id="delete">Удалить</button>
                         <button id="add">Создать</button>
                     </span>
-                    <span class="errorSpan">
-                        <img src="assets/img/tip.png" alt="tip">
-                        <p class="error"></p>
-                    </span>
+                    <div class="errorSpan">
+                <img src="assets/img/tip.png" alt="tip">
+                <p class="error"></p>
+            </div>
                 </div>
                 <div id="craftForm">
                     <span id="craftDisplay">

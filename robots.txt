@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /minecraft/admin.php
+Sitemap: /minecraft/sitemap.xml

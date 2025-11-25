@@ -1,11 +1,16 @@
 <?php
 
-// Подключение к базе
-$dsn = 'mysql:dbname=minecraft;host=127.0.0.1;port=3306';
+// Подключение к базе локально
+$dsn = 'mysql:dbname=minecraft;host=localhost;port=3306';
 // для опенсервера
 // $dsn = 'mysql:dbname=minecraft;host=127.0.0.1;port=3307';
 $user = 'root';
 $password = '';
+
+// на хосте
+// $dsn = 'mysql:dbname=dilyara203;host=localhost;port=3306';
+// $user = 'dilyara203';
+// $password = 'Dilyara203';
 
 try {
     $dbh = new PDO($dsn, $user, $password, [
