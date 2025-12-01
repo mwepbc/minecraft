@@ -38,7 +38,6 @@
             try {
                 const response = await fetch(request);
                 const result = await response.json();
-                console.log(result);
 
                 result ? admin.style.display = 'flex' : admin.style.display = 'none';
 
@@ -48,9 +47,6 @@
         }
         const requestAdmin = new Request("assets/functions/users.php", {
             method: "POST",
-            // headers: {
-            //     "Content-Type": "application/json",
-            // },
             body: JSON.stringify({
                 id_user: getCookie('user'),
                 function: 'adminVerify'

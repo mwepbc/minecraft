@@ -24,7 +24,7 @@ function auth($dbh, $login, $password)
     $sth->execute([$login, $password]);
     $user = $sth->fetch();
 
-    if(!$user){
+    if (!$user) {
         echo json_encode(['error' => 'Неверный логин или пароль']);
         exit();
     }
@@ -45,7 +45,8 @@ function userById($dbh, $id)
 }
 
 // функция вставки юзера в бд
-function insertUser($dbh, $login, $password, $role){
+function insertUser($dbh, $login, $password, $role)
+{
     if (empty($login) || empty($password)) {
         echo json_encode(["error" => "Заполните все поля"]);
         exit();
@@ -62,13 +63,18 @@ function insertUser($dbh, $login, $password, $role){
 // функция проверки на админские права
 function adminVerify($dbh, $id)
 {
+    if (!isset($id)) {
+        echo json_encode(false);
+        die();
+    }
+
     $sth = $dbh->prepare('SELECT *
     FROM users
     WHERE id=?');
     $sth->execute([$id]);
     $user = $sth->fetch();
 
-    if($user['role']=='admin')
+    if ($user['role'] == 'admin')
         echo json_encode(true);
     else
         echo json_encode(false);
@@ -91,5 +97,3 @@ try {
 } catch (\Throwable $th) {
     echo json_encode(['error' => $th->getMessage()]);
 }
-
-?>

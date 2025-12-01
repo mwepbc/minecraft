@@ -77,7 +77,7 @@
                 error_p.innerHTML = result.error;
                 errorSpan.style.display = 'flex';
             } else {
-                window.location.href = 'auth.php'
+                // window.location.href = 'auth.php';
             }
 
         } catch (error) {

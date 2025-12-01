@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
-
+<html prefix="og: http://ogp.me/ns#">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,19 +9,22 @@
     <title>Справочник рецептов крафтов Майнкрафт — RecipeCraft</title>
     <link rel="stylesheet" href="assets/styles/style.css">
 	<meta name="description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры."/>
-<meta name="keywords" content="майнкрафт,minecraft,рецепты,как сделать,крафт,рецепт майнкрафт,как сделать в майнкрафте, майнкрафт крафт, верстак">
+    <meta name="keywords" content="майнкрафт,minecraft,рецепты,как сделать,крафт,рецепт майнкрафт,как сделать в майнкрафте, майнкрафт крафт, верстак">
+    <meta property="og:title" content="Справочник рецептов крафтов Майнкрафт — RecipeCraft"/>
+    <meta property="og:image" content="https://f1160241.xsph.ru/assets/img/favicon.ico"/>
+    <meta property="og:description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры."/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://f1160241.xsph.ru/index.php" />
 </head>
 
 <body>
     <?php include("assets/includes/header.php") ?>
     <main>
         <div class="list">
-            <div class="listhead">
                 <div class="search">
                     <img src="assets/img/search.webp" alt="search">
                     <input type="search" placeholder="Поиск..." id="search">
                 </div>
-            </div>
             <div class="listCells">
             </div>
 
@@ -31,37 +35,51 @@
             </div>
         </div>
 
-        <table class="craftingTable">
-            <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-        </table>
+        <div class="craft" itemscope itemtype="https://schema.org/HowTo">
+            <p itemprop="name" style="display: none" >Рецепт крафта верстака</p>
+            <p itemprop="description" style="display: none" >Как скрафтить любой предмет? Покажем на сетке верстака</p>
 
-        <img src="assets/img/arrow.png" id="arrow">
+            <table class="craftingTable">
+                <tr>
+                    <td>
+                        <img src="assets/img/planks.png" alt="planks" title="planks" itemprop="step">
+                    </td>
+                    <td>
+                        <img src="assets/img/planks.png" alt="planks" title="planks" itemprop="step">
+                    </td>
+                    <td>
+                        <img src="assets/img/transparent.png" alt="trans">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="assets/img/planks.png" alt="planks" title="planks" itemprop="step">
+                    </td>
+                    <td>
+                        <img src="assets/img/planks.png" alt="planks" title="planks" itemprop="step">
+                    </td>
+                    <td>
+                        <img src="assets/img/transparent.png" alt="trans">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="assets/img/transparent.png" alt="trans">
+                    </td>
+                    <td>
+                        <img src="assets/img/transparent.png" alt="trans">
+                    </td>
+                    <td>
+                        <img src="assets/img/transparent.png" alt="trans">
+                    </td>
+                </tr>
+            </table>
 
-        <div class="result">
+            <img src="assets/img/arrow.png" id="arrow">
 
+            <div class="result" >
+                <img src="assets/img/crafting_table.webp" alt="crafting_table" title="crafting_table" itemprop="image">
+            </div>
         </div>
     </main>
 
@@ -137,15 +155,11 @@
             const result = await response.json();
             console.log(result);
 
-            craftingCells[0].innerHTML = `<img src = "assets/img/${result.slot1}" alt="" >`
-            craftingCells[1].innerHTML = `<img src = "assets/img/${result.slot2}" alt="" >`
-            craftingCells[2].innerHTML = `<img src = "assets/img/${result.slot3}" alt="" >`
-            craftingCells[3].innerHTML = `<img src = "assets/img/${result.slot4}" alt="" >`
-            craftingCells[4].innerHTML = `<img src = "assets/img/${result.slot5}" alt="" >`
-            craftingCells[5].innerHTML = `<img src = "assets/img/${result.slot6}" alt="" >`
-            craftingCells[6].innerHTML = `<img src = "assets/img/${result.slot7}" alt="" >`
-            craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" >`
-            craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" >`
+            let ingredients = [result.slot1, result.slot2, result.slot3, result.slot4,
+            result.slot5, result.slot6, result.slot7, result.slot8, result.slot9];
+            ingredients.forEach((element, index) => {
+                craftingCells[index].innerHTML = (element != null) ? `<img src = "assets/img/${element}" alt="${element}" >` : `<img src="assets/img/transparent.png" alt="trans">`;
+            });
 
             resultCell.innerHTML = `<img src="assets/img/${result.result_img}" alt="${result.result_name}">`;
             if (result.quantity != null) {
@@ -159,6 +173,40 @@
     // поиск
     let search = document.querySelector('#search');
     search.addEventListener('input', () => {postCrafts(createAllCraftsRequest());});
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Как скрафтить верстак в Minecraft",
+  "description": "Пошаговая инструкция, как создать верстак — базовый предмет для крафта других вещей в Minecraft.",
+  "image": "http://f1160241.xsph.ru/assets/img/crafting_table.webp",
+  "yield": "1 верстак",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "text": "Поместите 4 доски по 2x2 схеме",
+      "image": "http://f1160241.xsph.ru/assets/img/screenshot.png"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Готовый верстак появится в правом слоте результата. Перетащите его в инвентарь."
+    }
+  ],
+  "tool": [
+    {
+      "@type": "HowToTool",
+      "name": "Инвентарь игрока"
+    }
+  ],
+  "supply": [
+    {
+      "@type": "HowToSupply",
+      "name": "4 доски"
+    }
+  ]
+}
 </script>
 
 </html>

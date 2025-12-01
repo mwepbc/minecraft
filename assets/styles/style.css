@@ -15,12 +15,16 @@ a {
     color: inherit;
 }
 
+h1{
+    font-size: 28px;
+}
+
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    padding: 5vh;
+    padding: 35px;
     background-color: #1E1E1E;
 
     color: white;
@@ -32,11 +36,15 @@ header button{
 }
 
 #logo{
-    height: 10vh;
+    height: 70px;
 }
 
 button {
-    padding: 3vh 3vw;
+    padding: 25px 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     color: white;
     background: #128947;
@@ -50,19 +58,25 @@ button {
 
 nav {
     display: flex;
-    gap: 2vw;
+    gap: 20px;
 }
-
 /*главная*/
 main {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 
-    padding: 8vh;
+    height: 80vh;
+    padding: 50px 20px;
 
     background-size: 5%;
     background-image: url('../img/stone.webp');
+}
+
+.craft{
+    display: flex;
+    align-items: center;
+    gap: 2vw;
 }
 
 h1{
@@ -75,7 +89,7 @@ h1{
     gap: 2vh;
 
     width: 50%;
-    padding: 5vh;
+    padding: 40px;
 
     background: #D9D9D9;
     border: 7px solid black;
@@ -92,9 +106,12 @@ h1{
     display: flex;
     align-items: center;
 }
-
 .search img{
-    width: 3vw;
+    width: 40px;
+}
+
+.search input{
+    width: 90%;
 }
 
 .listCells{
@@ -108,9 +125,7 @@ h1{
 }
 
 .craftingTable {
-    width: 390px;
-    height: 390px;
-    padding: 7vh;
+    padding: 70px;
 
     background-image: url('../img/craftingTable.png');
     background-repeat: no-repeat;
@@ -121,7 +136,7 @@ h1{
     height: 80px;
     width: 80px;
 
-    border: #553824 solid 15px;
+    border: #553824 solid 13px;
     background: #AE693C;
     box-shadow: none;
 }
@@ -142,14 +157,20 @@ h1{
     
     width: 90px;
     height: 90px;
-    padding: 0.5vh;
+    padding: 20px;
 
     background: #8B8B8B;
     box-shadow: inset 5px 5px #373737, inset -5px -5px #FFFFFF;
 }
 
+.craftingTable img{
+    height: 50px;
+    width: 50px;
+}
+
 .cell img, .result img{
-    height: 80%;
+    height: 70px;
+    width: 70px;
 }
 
 .result{
@@ -176,7 +197,7 @@ footer{
     align-items: center;
 
     width: 100%;
-    padding: 5vh;
+    padding: 50px;
 
     background-color: #1E1E1E;
     color: white;
@@ -188,17 +209,18 @@ footer{
     background-image: url(../img/backgroundForm.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    height: auto;
 }
 
 .form{
     display: flex;
     flex-direction: column;
-    gap: 4vh;
+    gap: 40px;
 
     width: 40vw;
-    padding: 8vh;
+    padding: 70px;
 
-    border-radius: 3%;
+    border-radius: 30px;
 
     background-color: #262626;
     color: white;
@@ -209,7 +231,7 @@ footer{
 }
 
 input, select{
-    padding: 2vh;
+    padding: 20px;
     border: none;
 
     background: #131313;
@@ -219,7 +241,7 @@ input, select{
 .form>div{
     display: flex;
     flex-direction: column;
-    gap: 2vh;
+    gap: 20px;
 }
 
 .form>div:nth-last-child(2){
@@ -229,14 +251,14 @@ input, select{
 
 .errorSpan{
     align-items: center;
-    gap: 2vw;
-    padding: 2vh;
+    gap: 20px;
+    padding: 20px;
     background-color: #DEDEDE;
     border: 7px solid #AAAAAA;
 }
 
 .errorSpan img{
-    height: 8vh;
+    height: 80px;
 }
 
 .error{
@@ -261,13 +283,20 @@ input, select{
 #adminMain{
     flex-direction: column;
     gap: 4vh;
-    align-items: stretch
+    align-items: stretch;
+
+    height: auto;
 }
 
 #adminContainer{
     display: flex;
     justify-content: space-between;
     align-items: start;
+}
+
+.adminButtons{
+    display: flex;
+    gap: 20px;
 }
 
 #itemForm{
@@ -302,7 +331,7 @@ input, select{
 }
 
 #craftDisplay input{
-    width: 5vw;
+    width: 100px;
 }
 
 
@@ -371,4 +400,81 @@ input, select{
 
 #page404 h1{
     font-size: 28vh;
+}
+
+/* адаптивка */
+@media screen and (max-width: 900px) {
+    button{
+        padding: 25px 35px;
+    }
+    
+    /* шапка */
+    header{
+        gap: 25px;
+        flex-direction: column;
+    }
+    nav{
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* главная */
+    main{
+        flex-direction: column;
+        gap: 2vh;
+        height: auto;
+    }
+    .list{
+        padding: 25px;
+    }
+    .listCells{
+        gap: 10px 10px;
+    }
+    .cell{
+        width: 80px;
+        height: 80px;
+    }
+    .cell img{
+        width: 60px;
+        height: 60px;
+    }
+    .list,.craftingTable{
+        width: 100%;
+    }
+    .craft{
+        flex-direction: column-reverse;
+    }
+    .craftingTable{
+        padding: 60px;
+    }
+    .craftingTable td{
+        height: 70px;
+        width: 70px;
+
+        border: #553824 solid 10px;
+    }
+    .craftingTable img{
+        width: 45px;
+        height: 45px;
+    }
+    #arrow{
+        display: none;
+    }
+
+    /* формы */
+    .form{
+        width: 100%;
+        padding: 30px;
+    }
+
+    /* админ панель */
+    #adminContainer{
+        flex-direction: column;
+    }
+
+    /* подвал */
+    footer{
+        flex-direction: column;
+        gap: 25px;
+    }
 }

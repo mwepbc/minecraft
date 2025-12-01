@@ -23,12 +23,10 @@
         </div>
         <div id="adminContainer">
             <div class="list">
-                <div class="listhead">
                     <div class="search">
                         <img src="assets/img/search.webp" alt="search">
                         <input type="search" placeholder="Поиск...">
                     </div>
-                </div>
 
                 <div class="listCells">
                 </div>
@@ -52,12 +50,12 @@
                         <button id="add">Создать</button>
                     </span>
                     <div class="errorSpan">
-                <img src="assets/img/tip.png" alt="tip">
-                <p class="error"></p>
-            </div>
+                        <img src="assets/img/tip.png" alt="tip">
+                        <p class="error"></p>
+                    </div>
                 </div>
                 <div id="craftForm">
-                    <span id="craftDisplay">
+                    <span id="craftDisplay" class="craft">
                         <table class="craftingTable">
                             <tr>
                                 <td>
@@ -135,6 +133,7 @@
 
     async function postItems(request, sort = 'a-z') {
         try {
+            postCrafts(createAllCraftsRequest());
             const response = await fetch(request);
             const resultData = await response.json();
 
@@ -363,52 +362,41 @@
                     result.push(element);
             });
 
+            console.log(result);
             crafts.innerHTML = '';
 
             result.forEach(element => {
                 let cell = document.createElement('div');
                 cell.className = "craft";
                 cell.setAttribute('id_craft', element.id);
-
+                
                 cell.innerHTML = `
                         <table class="craftingTable" id_craft="${element.id}">
                             <tr>
-                                <td>
-                                    <img src="assets/img/${element.slot1}" alt="">
-                                </td>
-                                <td>
-                                    <img src="assets/img/${element.slot2}" alt="">
-                                </td>
-                                <td>
-                                    <img src="assets/img/${element.slot3}" alt="">
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
-
                             <tr>
-                                <td>
-                                    <img src="assets/img/${element.slot4}" alt="">
-                                </td>
-                                <td>
-                                    <img src="assets/img/${element.slot5}" alt="">
-                                </td>
-                                <td>
-                                    <img src="assets/img/${element.slot6}" alt="">
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
-
                             <tr>
-                                <td>
-                                    <img src="assets/img/${element.slot7}" alt="">
-                                </td>
-                                <td>
-                                    <img src="assets/img/${element.slot8}" alt="">
-                                </td>
-                                <td>
-                                    <img src="assets/img/${element.slot9}" alt="">
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </table>
                     `;
+                    
+                let ingredients = [element.slot1, element.slot2, element.slot3, element.slot4,
+                element.slot5, element.slot6, element.slot7, element.slot8, element.slot9];
+
+                cell.querySelectorAll('td').forEach((e, i) => {
+                    e.innerHTML=(ingredients[i] != null) ? `<img src = "assets/img/${ingredients[i]}" alt="${ingredients[i]}" >` : `<img src="assets/img/transparent.png" alt="trans">`;
+                    console.log(e);
+                });
 
                 if (element.quantity != null) {
                     cell.innerHTML += `
@@ -445,7 +433,7 @@
 
             // очистка полей
             craftingCells.forEach(element => {
-                element.innerHTML = '';
+                element.innerHTML = '<img src="assets/img/transparent.png" alt="trans">';
             });
             resultCell.innerHTML = '';
             quantity.value = null;
@@ -473,7 +461,6 @@
             })
         });
     }
-    postCrafts(createAllCraftsRequest());
 
     const craftingCells = document.querySelectorAll('#craftDisplay .craftingTable td');
     const resultCell = document.querySelector('#craftDisplay .result');
@@ -491,15 +478,11 @@
             const result = await response.json();
             console.log(result);
 
-            craftingCells[0].innerHTML = `<img src = "assets/img/${result.slot1}" alt="" id_item="${result.id1}">`
-            craftingCells[1].innerHTML = `<img src = "assets/img/${result.slot2}" alt="" id_item="${result.id2}">`
-            craftingCells[2].innerHTML = `<img src = "assets/img/${result.slot3}" alt="" id_item="${result.id3}">`
-            craftingCells[3].innerHTML = `<img src = "assets/img/${result.slot4}" alt="" id_item="${result.id4}">`
-            craftingCells[4].innerHTML = `<img src = "assets/img/${result.slot5}" alt="" id_item="${result.id5}">`
-            craftingCells[5].innerHTML = `<img src = "assets/img/${result.slot6}" alt="" id_item="${result.id6}">`
-            craftingCells[6].innerHTML = `<img src = "assets/img/${result.slot7}" alt="" id_item="${result.id7}">`
-            craftingCells[7].innerHTML = `<img src = "assets/img/${result.slot8}" alt="" id_item="${result.id8}">`
-            craftingCells[8].innerHTML = `<img src = "assets/img/${result.slot9}" alt="" id_item="${result.id9}">`
+            let ingredients = [result.slot1, result.slot2, result.slot3, result.slot4,
+            result.slot5, result.slot6, result.slot7, result.slot8, result.slot9];
+            ingredients.forEach((element, index) => {
+                craftingCells[index].innerHTML = (element != null) ? `<img src = "assets/img/${element}" alt="${element}" >` : `<img src="assets/img/transparent.png" alt="trans">`;
+            });
 
             resultCell.innerHTML = `<img src="assets/img/${result.result_img}" title="${result.result_name}" alt="${result.result_name}" id_item="${result.result_id}">`;
             quantity.value = result.quantity;

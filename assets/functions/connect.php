@@ -8,9 +8,9 @@ $user = 'root';
 $password = '';
 
 // на хосте
-// $dsn = 'mysql:dbname=dilyara203;host=localhost;port=3306';
-// $user = 'dilyara203';
-// $password = 'Dilyara203';
+// $dsn = 'mysql:dbname=f1160241_project;host=localhost;port=3306';
+// $user = 'f1160241_project';
+// $password = 'minecraft';
 
 try {
     $dbh = new PDO($dsn, $user, $password, [
@@ -34,9 +34,6 @@ try {
             }
         }
     }
-
-    // $input = file_get_contents('php://input');
-    // $data = json_decode($input, true);
 } catch (PDOException $e) {
     die("Ошибка подключения: " . $e->getMessage());
 }
