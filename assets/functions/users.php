@@ -20,16 +20,19 @@ function auth($dbh, $login, $password)
 
     $sth = $dbh->prepare('SELECT *
     FROM users
-    WHERE login=? AND password=?');
-    $sth->execute([$login, $password]);
+    WHERE login=?');
+    $sth->execute([$login]);
     $user = $sth->fetch();
 
     if (!$user) {
-        echo json_encode(['error' => 'Неверный логин или пароль']);
+        echo json_encode(['error' => 'Такого пользователя не существует']);
         exit();
     }
 
-    echo json_encode($user);
+    if (password_verify($password, $user['password']))
+        echo json_encode($user);
+    else
+        echo json_encode(['error' => 'Неверный пароль']);
 }
 
 // функция поиска юзера по айди
@@ -38,14 +41,14 @@ function userById($dbh, $id)
     $sth = $dbh->prepare('SELECT *
     FROM users
     WHERE id=?');
-    $sth->execute($id);
+    $sth->execute([$id]);
     $user = $sth->fetch();
 
     return $user;
 }
 
 // функция вставки юзера в бд
-function insertUser($dbh, $login, $password, $role)
+function insertUser($dbh, $login, $password)
 {
     if (empty($login) || empty($password)) {
         echo json_encode(["error" => "Заполните все поля"]);
@@ -54,8 +57,8 @@ function insertUser($dbh, $login, $password, $role)
 
     $sth = $dbh->prepare('INSERT INTO `users`
     (`id`, `login`, `password`, `role`)
-    VALUES (NULL, ?, ?, ?)');
-    $sth->execute([$login, $password, $role]);
+    VALUES (NULL, ?, ?, "user")');
+    $sth->execute([$login, password_hash($password, PASSWORD_DEFAULT)]);
 
     echo json_encode(['yay']);
 }
@@ -63,7 +66,7 @@ function insertUser($dbh, $login, $password, $role)
 // функция проверки на админские права
 function adminVerify($dbh, $id)
 {
-    if (!isset($id)) {
+    if ($id == 0) {
         echo json_encode(false);
         die();
     }
@@ -91,7 +94,7 @@ try {
             break;
 
         case 'insertUser':
-            insertUser($dbh, $data['login'], $data['password'], $data['role']);
+            insertUser($dbh, $data['login'], $data['password']);
             break;
     }
 } catch (\Throwable $th) {

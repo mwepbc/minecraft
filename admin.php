@@ -23,10 +23,10 @@
         </div>
         <div id="adminContainer">
             <div class="list">
-                    <div class="search">
-                        <img src="assets/img/search.webp" alt="search">
-                        <input type="search" placeholder="Поиск...">
-                    </div>
+                <div class="search">
+                    <img src="assets/img/search.webp" alt="search">
+                    <input type="search" placeholder="Поиск...">
+                </div>
 
                 <div class="listCells">
                 </div>
@@ -115,6 +115,31 @@
 </body>
 <script src='assets/js/main.js'></script>
 <script>
+    //проверка админа
+    async function postAdmin(request) {
+        try {
+            const response = await fetch(request);
+            console.log(response);
+            const result = await response.json();
+            if (!result)
+                window.location.href = "index.php";
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    const requestAdmin = new Request("assets/functions/users.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id_user: (getCookie('user') == undefined) ? 0 : getCookie('user'),
+            function: 'adminVerify'
+        }),
+    });
+    postAdmin(requestAdmin);
+    
     // блоки управления
     let itemForm = document.querySelector('#itemForm');
     let craftForm = document.querySelector('#craftForm');
@@ -369,7 +394,7 @@
                 let cell = document.createElement('div');
                 cell.className = "craft";
                 cell.setAttribute('id_craft', element.id);
-                
+
                 cell.innerHTML = `
                         <table class="craftingTable" id_craft="${element.id}">
                             <tr>
@@ -389,12 +414,13 @@
                             </tr>
                         </table>
                     `;
-                    
+
                 let ingredients = [element.slot1, element.slot2, element.slot3, element.slot4,
-                element.slot5, element.slot6, element.slot7, element.slot8, element.slot9];
+                    element.slot5, element.slot6, element.slot7, element.slot8, element.slot9
+                ];
 
                 cell.querySelectorAll('td').forEach((e, i) => {
-                    e.innerHTML=(ingredients[i] != null) ? `<img src = "assets/img/${ingredients[i]}" alt="${ingredients[i]}" >` : `<img src="assets/img/transparent.png" alt="trans">`;
+                    e.innerHTML = (ingredients[i] != null) ? `<img src = "assets/img/${ingredients[i]}" alt="${ingredients[i]}" >` : `<img src="assets/img/transparent.png" alt="trans">`;
                     console.log(e);
                 });
 
@@ -478,10 +504,19 @@
             const result = await response.json();
             console.log(result);
 
-            let ingredients = [result.slot1, result.slot2, result.slot3, result.slot4,
-            result.slot5, result.slot6, result.slot7, result.slot8, result.slot9];
+            let ingredients = [
+                [('img', result.slot1), ('id', result.id1)],
+                [('img', result.slot2), ('id', result.id2)],
+                [('img', result.slot3), ('id', result.id3)],
+                [('img', result.slot4), ('id', result.id4)],
+                [('img', result.slot5), ('id', result.id5)],
+                [('img', result.slot6), ('id', result.id6)],
+                [('img', result.slot7), ('id', result.id7)],
+                [('img', result.slot8), ('id', result.id8)],
+                [('img', result.slot9), ('id', result.id9)]
+            ];
             ingredients.forEach((element, index) => {
-                craftingCells[index].innerHTML = (element != null) ? `<img src = "assets/img/${element}" alt="${element}" >` : `<img src="assets/img/transparent.png" alt="trans">`;
+                craftingCells[index].innerHTML = (element[0] != null) ? `<img src = "assets/img/${element[0]}" alt="${element[0]}" id_item="${element[1]}">` : `<img src="assets/img/transparent.png" alt="trans">`;
             });
 
             resultCell.innerHTML = `<img src="assets/img/${result.result_img}" title="${result.result_name}" alt="${result.result_name}" id_item="${result.result_id}">`;

@@ -4,5 +4,4 @@ Disallow: /minecraft.sql
 Disallow: /assets/functions
 Disallow: /assets/includes
 Disallow: /README.md
-
-Sitemap: http://dilyara203.temp.swtest.ru/sitemap.xml
+Sitemap: http://f1160241.xsph.ru/sitemap.xml

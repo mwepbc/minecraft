@@ -26,13 +26,6 @@
                 <label for="password">ПАРОЛЬ</label>
                 <input type="password" name="password" id="password">
             </div>
-            <div>
-                <label for="role">РОЛЬ</label>
-                <select name="role" id="role">
-                    <option value="admin">Администратор</option>
-                    <option value="user" selected>Пользователь</option>
-                </select>
-            </div>
             <div class="errorSpan">
                 <img src="assets/img/tip.png" alt="tip">
                 <p class="error"></p>
@@ -50,13 +43,13 @@
 
     let login = document.querySelector('#login');
     let password = document.querySelector('#password');
-    let role = document.querySelector('#role');
+
+    errorSpan.style.display = 'none';
 
     submit.addEventListener('click', () => {
         let form = new FormData();
         form.append("login", login.value);
         form.append("password", password.value);
-        form.append("role", role.value);
         form.append("function", 'insertUser');
 
         const request1 = new Request("assets/functions/users.php", {
@@ -77,7 +70,7 @@
                 error_p.innerHTML = result.error;
                 errorSpan.style.display = 'flex';
             } else {
-                // window.location.href = 'auth.php';
+                window.location.href = 'auth.php'
             }
 
         } catch (error) {

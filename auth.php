@@ -40,6 +40,8 @@
 
     let login = document.querySelector('#login');
     let password = document.querySelector('#password');
+    
+    errorSpan.style.display = 'none';
 
     submit.addEventListener('click', () => {
         let form = new FormData();
@@ -49,9 +51,6 @@
 
         const request1 = new Request("assets/functions/users.php", {
             method: "POST",
-            // headers: {
-            //     "Content-Type": "application/json",
-            // },
             body: form
         });
         post(request1);
@@ -62,6 +61,8 @@
             const response = await fetch(request);
             const result = await response.json();
 
+            console.log(result);
+
             if (result.error) {
                 error_p.innerHTML = result.error;
                 errorSpan.style.display = 'flex';
@@ -69,11 +70,10 @@
                 // кука будет жить полчаса
                 document.cookie = `user=${result.id}; max-age=1800; path=/`;
 
-                if (result.role == 'admin') {
+                if (result.role == 'admin')
                     window.location.href = 'admin.php'
-                } else {
+                else 
                     window.location.href = 'index.php'
-                }
             }
         } catch (error) {
             console.error("Error:", error);

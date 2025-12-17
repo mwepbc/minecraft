@@ -108,7 +108,7 @@ function craftForId($dbh, $id)
         'result_img' => $craft['result_image'],
         'quantity' => $craft['quantity'] ?? null,
         'slot1' => $craft['image1'] ?? null,
-        'id1'=>$craft['id1'] ?? null,
+        'id1' => $craft['id1'] ?? null,
         'slot2' => $craft['image2'] ?? null,
         'id2' => $craft['id2'] ?? null,
         'slot3' => $craft['image3'] ?? null,
@@ -177,16 +177,20 @@ function deleteCraft($dbh, $id)
     $sth = $dbh->prepare('
         DELETE FROM `crafts`
         WHERE `crafts`.`id` = ?');
-        
-        $sth->execute([$id]);
-        echo json_encode('yay!');
+
+    $sth->execute([$id]);
+    echo json_encode('yay!');
 }
 
-// функция вставки юзера в бд
+// функция вставки крафта в бд
 function insertCraft($dbh, $res, $pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $pos_6, $pos_7, $pos_8, $pos_9, $quantity)
 {
     if ($quantity <= 0) {
         echo json_encode(['error' => 'Количество не может быть равно или меньше 0']);
+        exit();
+    }
+    if ((int)$quantity > 64) {
+        echo json_encode(['error' => 'Количество не может быть больше 64']);
         exit();
     }
     if ($res == 'null') {
@@ -200,10 +204,10 @@ function insertCraft($dbh, $res, $pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $pos_6,
     foreach ($positions as $pos) {
         if ($pos == 'null')
             $c++;
-        
 
-        if ($c == 9){
-            echo json_encode(['error'=>'Сетка крафта не может быть пустой']);
+
+        if ($c == 9) {
+            echo json_encode(['error' => 'Сетка крафта не может быть пустой']);
             exit;
         }
     }
@@ -218,7 +222,7 @@ function insertCraft($dbh, $res, $pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $pos_6,
     $pos_7 = ($pos_7 == 'null') ? null : (int)$pos_7;
     $pos_8 = ($pos_8 == 'null') ? null : (int)$pos_8;
     $pos_9 = ($pos_9 == 'null') ? null : (int)$pos_9;
-    
+
     $sth = $dbh->prepare('INSERT INTO `crafts`
             (`id`, `crafting_item`, `pos_1`, `pos_2`, `pos_3`, `pos_4`, `pos_5`, `pos_6`, `pos_7`, `pos_8`, `pos_9`, `quantity`)
             VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -233,6 +237,10 @@ function updateCraft($dbh, $id, $res, $pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $p
         echo json_encode(['error' => 'Количество не может быть равно или меньше 0']);
         exit();
     }
+    if ((int)$quantity > 64) {
+        echo json_encode(['error' => 'Количество не может быть больше 64']);
+        exit();
+    }
     if ($res == 'null') {
         echo json_encode(['error' => 'Выберите предмет для рецепта крафта']);
         exit();
@@ -245,8 +253,8 @@ function updateCraft($dbh, $id, $res, $pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $p
         if ($pos == 'null')
             $c++;
 
-        if ($c == 9){
-            echo json_encode(['error'=>'Сетка крафта не может быть пустой']);
+        if ($c == 9) {
+            echo json_encode(['error' => 'Сетка крафта не может быть пустой']);
             exit;
         }
     }
@@ -263,7 +271,7 @@ function updateCraft($dbh, $id, $res, $pos_1, $pos_2, $pos_3, $pos_4, $pos_5, $p
     $pos_9 = ($pos_9 == 'null') ? null : (int)$pos_9;
 
     // var_dump($positions);
-    
+
     $sth = $dbh->prepare('UPDATE `crafts` 
     SET `crafting_item` = ?, 
     `pos_1` = ?, 
@@ -296,22 +304,25 @@ try {
             break;
 
         case 'insertCraft':
-            insertCraft($dbh,
-            $data['result_id'],
-            $data['slot0'],
-            $data['slot1'],
-            $data['slot2'],
-            $data['slot3'],
-            $data['slot4'],
-            $data['slot5'],
-            $data['slot6'],
-            $data['slot7'],
-            $data['slot8'],
-            $data['quantity']);
+            insertCraft(
+                $dbh,
+                $data['result_id'],
+                $data['slot0'],
+                $data['slot1'],
+                $data['slot2'],
+                $data['slot3'],
+                $data['slot4'],
+                $data['slot5'],
+                $data['slot6'],
+                $data['slot7'],
+                $data['slot8'],
+                $data['quantity']
+            );
             break;
 
-            case 'updateCraft':
-                updateCraft($dbh,
+        case 'updateCraft':
+            updateCraft(
+                $dbh,
                 $data['id_craft'],
                 $data['result_id'],
                 $data['slot0'],
@@ -325,7 +336,7 @@ try {
                 $data['slot8'],
                 $data['quantity']
             );
-                break;
+            break;
 
         default:
             echo 'oopseeee';
@@ -334,4 +345,3 @@ try {
 } catch (Throwable $th) {
     echo json_encode(['error' => $th->getMessage()]);
 }
-

@@ -1,30 +1,73 @@
 <!DOCTYPE html>
 <html lang="ru">
 <html prefix="og: http://ogp.me/ns#">
-    
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="assets/img/favicon.ico" rel="icon" type="image/x-icon">
-    <title>Справочник рецептов крафтов Майнкрафт — RecipeCraft</title>
-    <link rel="stylesheet" href="assets/styles/style.css">
-	<meta name="description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры."/>
-    <meta name="keywords" content="майнкрафт,minecraft,рецепты,как сделать,крафт,рецепт майнкрафт,как сделать в майнкрафте, майнкрафт крафт, верстак">
-    <meta property="og:title" content="Справочник рецептов крафтов Майнкрафт — RecipeCraft"/>
-    <meta property="og:image" content="https://f1160241.xsph.ru/assets/img/favicon.ico"/>
-    <meta property="og:description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры."/>
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://f1160241.xsph.ru/index.php" />
-</head>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://f1160241.xsph.ru/favicon.ico" rel="icon" type="image/x-icon">
+        <title>Справочник рецептов крафтов Майнкрафт — RecipeCraft</title>
+        <link rel="stylesheet" href="assets/styles/style.css">
+        <meta name="description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры.">
+        <meta name="keywords" content="майнкрафт,minecraft,рецепты,как сделать,крафт,рецепт майнкрафт,как сделать в майнкрафте, майнкрафт крафт, верстак">
+        <meta property="og:title" content="Справочник рецептов крафтов Майнкрафт — RecipeCraft">
+        <meta property="og:description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры.">
+        <meta property="og:url" content="http://f1160241.xsph.ru/">
+        <meta property="og:image" content="http://f1160241.xsph.ru/assets/img/logo.avif">
+        <meta property="og:image:alt" content="Справочник рецептов крафтов Майнкрафт — RecipeCraft">
+        <meta property="og:image:width" content="466">
+        <meta property="og:image:height" content="147">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="RecipeCraft">
+        <meta property="og:locale" content="ru_RU">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@mcwun9773">
+        <meta name="twitter:title" content="Справочник рецептов крафтов Майнкрафт — RecipeCraft">
+        <meta name="twitter:description" content="Найди любой рецепт крафта в майнкрафт прямо на сетке верстака. Интерактивный справочник прямо из игры.">
+        <meta name="twitter:image" content="http://f1160241.xsph.ru/assets/img/logo.webp">
+        <meta name="twitter:url" content="http://f1160241.xsph.ru">
+        
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript">
+            (function(m, e, t, r, i, k, a) {
+                m[i] = m[i] || function() {
+                    (m[i].a = m[i].a || []).push(arguments)
+                };
+                m[i].l = 1 * new Date();
+                for (var j = 0; j < document.scripts.length; j++) {
+                    if (document.scripts[j].src === r) {
+                        return;
+                    }
+                }
+                k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+            })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=105612130', 'ym');
+
+            ym(105612130, 'init', {
+                ssr: true,
+                webvisor: true,
+                clickmap: true,
+                ecommerce: "dataLayer",
+                accurateTrackBounce: true,
+                trackLinks: true
+            });
+        </script>
+        <noscript>
+            <div><img src="https://mc.yandex.ru/watch/105612130" style="position:absolute; left:-9999px;" alt="" /></div>
+        </noscript>
+        <!-- /Yandex.Metrika counter -->
+    </head>
 
 <body>
     <?php include("assets/includes/header.php") ?>
     <main>
         <div class="list">
-                <div class="search">
-                    <img src="assets/img/search.webp" alt="search">
-                    <input type="search" placeholder="Поиск..." id="search">
-                </div>
+            <div class="search">
+                <img src="assets/img/search.webp" alt="search">
+                <input type="search" placeholder="Поиск..." id="search">
+            </div>
             <div class="listCells">
             </div>
 
@@ -36,8 +79,8 @@
         </div>
 
         <div class="craft" itemscope itemtype="https://schema.org/HowTo">
-            <p itemprop="name" style="display: none" >Рецепт крафта верстака</p>
-            <p itemprop="description" style="display: none" >Как скрафтить любой предмет? Покажем на сетке верстака</p>
+            <p itemprop="name" style="display: none">Рецепт крафта верстака</p>
+            <p itemprop="description" style="display: none">Как скрафтить любой предмет? Покажем на сетке верстака</p>
 
             <table class="craftingTable">
                 <tr>
@@ -77,7 +120,7 @@
 
             <img src="assets/img/arrow.png" id="arrow">
 
-            <div class="result" >
+            <div class="result">
                 <img src="assets/img/crafting_table.webp" alt="crafting_table" title="crafting_table" itemprop="image">
             </div>
         </div>
@@ -156,7 +199,8 @@
             console.log(result);
 
             let ingredients = [result.slot1, result.slot2, result.slot3, result.slot4,
-            result.slot5, result.slot6, result.slot7, result.slot8, result.slot9];
+                result.slot5, result.slot6, result.slot7, result.slot8, result.slot9
+            ];
             ingredients.forEach((element, index) => {
                 craftingCells[index].innerHTML = (element != null) ? `<img src = "assets/img/${element}" alt="${element}" >` : `<img src="assets/img/transparent.png" alt="trans">`;
             });
@@ -172,41 +216,38 @@
 
     // поиск
     let search = document.querySelector('#search');
-    search.addEventListener('input', () => {postCrafts(createAllCraftsRequest());});
+    search.addEventListener('input', () => {
+        postCrafts(createAllCraftsRequest());
+    });
 </script>
 
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": "Как скрафтить верстак в Minecraft",
-  "description": "Пошаговая инструкция, как создать верстак — базовый предмет для крафта других вещей в Minecraft.",
-  "image": "http://f1160241.xsph.ru/assets/img/crafting_table.webp",
-  "yield": "1 верстак",
-  "step": [
     {
-      "@type": "HowToStep",
-      "text": "Поместите 4 доски по 2x2 схеме",
-      "image": "http://f1160241.xsph.ru/assets/img/screenshot.png"
-    },
-    {
-      "@type": "HowToStep",
-      "text": "Готовый верстак появится в правом слоте результата. Перетащите его в инвентарь."
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Как скрафтить верстак в Minecraft",
+        "description": "Пошаговая инструкция, как создать верстак — базовый предмет для крафта других вещей в Minecraft.",
+        "image": "http://f1160241.xsph.ru/assets/img/crafting_table.webp",
+        "yield": "1 верстак",
+        "step": [{
+                "@type": "HowToStep",
+                "text": "Поместите 4 доски по 2x2 схеме",
+                "image": "http://f1160241.xsph.ru/assets/img/screenshot.png"
+            },
+            {
+                "@type": "HowToStep",
+                "text": "Готовый верстак появится в правом слоте результата. Перетащите его в инвентарь."
+            }
+        ],
+        "tool": [{
+            "@type": "HowToTool",
+            "name": "Инвентарь игрока"
+        }],
+        "supply": [{
+            "@type": "HowToSupply",
+            "name": "4 доски"
+        }]
     }
-  ],
-  "tool": [
-    {
-      "@type": "HowToTool",
-      "name": "Инвентарь игрока"
-    }
-  ],
-  "supply": [
-    {
-      "@type": "HowToSupply",
-      "name": "4 доски"
-    }
-  ]
-}
 </script>
 
 </html>
