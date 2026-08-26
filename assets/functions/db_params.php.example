@@ -1,0 +1,9 @@
+<?php
+
+// some kind of env file but without any packages
+
+$DB_NAME = '';
+$DB_HOST = '';
+$DB_PORT = '';
+$DB_USER = '';
+$DB_PASS = '';

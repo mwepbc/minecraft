@@ -1,11 +1,12 @@
-# minecraft
-!!!IMPORTANT!!!
-this project uses only local db with port 3306!!! (mine`s xampp)
-import db from the sql file in project directory to your local server
+# minecraft — course work
 
-course work
+You can try it on http://mwepw.xsph.ru/minecraft
 
-nothing bits a jet 2 holiday! and right now you can save 50 punds per person!
+# Admin panel access
+login: admin
+password: admin
+Local managmement: to give admin rights to the user change the **role** column from 'user' to 'admin'
 
-my first normal  reposotory i guess
-this project is minecraft recipe book but way smaller than the original one as my course work
+# Config
+SQL dump is on **minecraft.sql** file in main directory
+DB env configures in db_params.php file. You have an example in **assets/functions** directory. Fill variables with right value and rename file in db_params.php.

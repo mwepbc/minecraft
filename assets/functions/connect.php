@@ -1,19 +1,10 @@
 <?php
+include('db_params.php');
 
-// Подключение к базе локально
-$dsn = 'mysql:dbname=minecraft;host=localhost;port=3306';
-// для опенсервера
-// $dsn = 'mysql:dbname=minecraft;host=127.0.0.1;port=3307';
-$user = 'root';
-$password = '';
-
-// на хосте
-// $dsn = 'mysql:dbname=f1160241_project;host=localhost;port=3306';
-// $user = 'f1160241_project';
-// $password = 'minecraft';
+$dsn = 'mysql:dbname='.$DB_NAME.';host='.$DB_HOST.';port='.$DB_PORT;
 
 try {
-    $dbh = new PDO($dsn, $user, $password, [
+    $dbh = new PDO($dsn, $DB_USER, $DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
